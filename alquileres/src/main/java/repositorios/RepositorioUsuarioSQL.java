@@ -22,15 +22,18 @@ public abstract class RepositorioUsuarioSQL<Usuario extends Identificable> imple
 	}
 	
 	@Override
-	public String add(Usuario entity) throws RepositorioException {
-		UsuarioEntidad usuarioEntidad = new UsuarioEntidad();
+    	public String add(Usuario entity) throws RepositorioException {
+        
+		UsuarioEntidad usuarioEntidad = convertirAUsuarioEntidad(entity);
+        
 		EntityManager em = EntityManagerHelper.getEntityManager();
+		
 		try {
 			em.getTransaction().begin();
-			em.persist(usuarioEntidad);
-			em.getTransaction().commit();
+            		em.persist(usuarioEntidad);
+            		em.getTransaction().commit();
 		} catch (Exception e) {
-			throw new RepositorioException("Error al guardar la entidad con id "+entity.getId(),e);
+			throw new RepositorioException("Error al guardar la entidad con id " + entity.getId(), e);
 		} finally {
 			if (em.getTransaction().isActive()) {
 				em.getTransaction().rollback();
@@ -41,22 +44,20 @@ public abstract class RepositorioUsuarioSQL<Usuario extends Identificable> imple
 	}
 
 	@Override
-	public void update(Usuario entity) throws RepositorioException, EntidadNoEncontrada {
-		UsuarioEntidad usuarioEntidad = new UsuarioEntidad();
-		
+    	public void update(Usuario entity) throws RepositorioException, EntidadNoEncontrada {
+        	UsuarioEntidad usuarioEntidad = convertirAUsuarioEntidad(entity);
+        	
 		EntityManager em = EntityManagerHelper.getEntityManager();
-		try {
+        	try {
 			em.getTransaction().begin();
-			
-			UsuarioEntidad instance = em.find(UsuarioEntidad.class, entity.getId());
-			if(instance == null) {
+			UsuarioEntidad instance = em.find(getClase(), entity.getId());
+			if (instance == null) {
 				throw new EntidadNoEncontrada(entity.getId() + " no existe en el repositorio");
 			}
-			
-			em.merge(instance);			
+			em.merge(usuarioEntidad);
 			em.getTransaction().commit();
 		} catch (Exception e) {
-			throw new RepositorioException("Error al actualizar la entidad con id "+entity.getId(),e);
+			throw new RepositorioException("Error al actualizar la entidad con id " + entity.getId(), e);
 		} finally {
 			if (em.getTransaction().isActive()) {
 				em.getTransaction().rollback();
@@ -89,25 +90,21 @@ public abstract class RepositorioUsuarioSQL<Usuario extends Identificable> imple
 	}
 
 	@Override
-	public Usuario getById(String id) throws EntidadNoEncontrada, RepositorioException {
-		UsuarioEntidad usuarioEntidad = new UsuarioEntidad();
-		EntityManager em = EntityManagerHelper.getEntityManager();
-		try {			
-			Usuario instance = (Usuario) em.find(getClase(), id);
-
-			if (instance != null) {
-				em.refresh(instance);
-			} else {
-				throw new EntidadNoEncontrada(id + " no existe en el repositorio");
-			}
-
-			return instance;
-
-		} catch (RuntimeException re) {
-			throw new RepositorioException("Error al recuperar la entidad con id "+id,re);
-		}
-	}
-
+	    public Usuario getById(String id) throws EntidadNoEncontrada, RepositorioException {
+	        EntityManager em = EntityManagerHelper.getEntityManager();
+	        try {
+	            UsuarioEntidad usuarioEntidad = em.find(getClase(), id);
+	            if (usuarioEntidad == null) {
+	                throw new EntidadNoEncontrada("Usuario con id " + id + " no encontrado");
+	            }
+	            return convertirAUsuario(usuarioEntidad);
+	        } catch (RuntimeException re) {
+	            throw new RepositorioException("Error al recuperar la entidad con id " + id, re);
+	        } finally {
+	            EntityManagerHelper.closeEntityManager();
+	        }
+	    }
+	
 	@Override
 	public List<Usuario> getAll() throws RepositorioException{
 		UsuarioEntidad usuarioEntidad = new UsuarioEntidad();
@@ -147,5 +144,9 @@ public abstract class RepositorioUsuarioSQL<Usuario extends Identificable> imple
 
 		}
 	}
+
+	
+    protected abstract Usuario convertirAUsuario(UsuarioEntidad entidad);
+    protected abstract UsuarioEntidad convertirAUsuarioEntidad(Usuario entidad);
 
 }
