@@ -15,15 +15,17 @@ public class Usuario implements Identificable{
 	private String id;
 	private List<Reserva> reservas;
 	private List<Alquiler> alquileres;
+	private UsuarioEntidad usuarioEntidad;
 	
 	public Usuario() {
-		
+		this.usuarioEntidad = new UsuarioEntidad();
 	}
 	
 	public Usuario(String id) {
 		this.id = id;
 		this.alquileres = new LinkedList<>();
 		this.reservas = new LinkedList<>();
+		this.usuarioEntidad = new UsuarioEntidad();
 	}
 
 	public int reservasCadudadas(){
