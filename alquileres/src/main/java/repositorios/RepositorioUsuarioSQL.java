@@ -13,9 +13,14 @@ import utils.EntityManagerHelper;
 
 public abstract class RepositorioUsuarioSQL<Usuario extends Identificable> implements Repositorio<Usuario, String>{
 
-	public abstract Class<Usuario> getClase();
-	public abstract String getNombre();
-
+	public Class<UsuarioEntidad> getClase() {
+	    return UsuarioEntidad.class;
+	}
+	
+	public String getNombre() {
+	    return UsuarioEntidad.class.getName().substring(UsuarioEntidad.class.getName().lastIndexOf(".") + 1);
+	}
+	
 	@Override
 	public String add(Usuario entity) throws RepositorioException {
 		UsuarioEntidad usuarioEntidad = new UsuarioEntidad();
@@ -38,15 +43,17 @@ public abstract class RepositorioUsuarioSQL<Usuario extends Identificable> imple
 	@Override
 	public void update(Usuario entity) throws RepositorioException, EntidadNoEncontrada {
 		UsuarioEntidad usuarioEntidad = new UsuarioEntidad();
+		
 		EntityManager em = EntityManagerHelper.getEntityManager();
 		try {
 			em.getTransaction().begin();
 			
-			Usuario instance = em.find(getClase(), entity.getId());
+			UsuarioEntidad instance = em.find(UsuarioEntidad.class, entity.getId());
 			if(instance == null) {
 				throw new EntidadNoEncontrada(entity.getId() + " no existe en el repositorio");
 			}
-			entity = em.merge(entity);			
+			
+			em.merge(instance);			
 			em.getTransaction().commit();
 		} catch (Exception e) {
 			throw new RepositorioException("Error al actualizar la entidad con id "+entity.getId(),e);
@@ -61,14 +68,15 @@ public abstract class RepositorioUsuarioSQL<Usuario extends Identificable> imple
 	@Override
 	public void delete(Usuario entity) throws RepositorioException, EntidadNoEncontrada {
 		UsuarioEntidad usuarioEntidad = new UsuarioEntidad();
+		
 		EntityManager em = EntityManagerHelper.getEntityManager();
 		try {
 			em.getTransaction().begin();
-			Usuario instance = em.find(getClase(), entity.getId());
+			UsuarioEntidad instance = em.find(UsuarioEntidad.class, entity.getId());
 			if(instance == null) {
 				throw new EntidadNoEncontrada(entity.getId() + " no existe en el repositorio");
 			}
-			em.remove(entity);
+			em.remove(instance);
 			em.getTransaction().commit();
 		} catch (Exception e) {
 			throw new RepositorioException("Error al borrar la entidad con id "+entity.getId(),e);
@@ -85,7 +93,7 @@ public abstract class RepositorioUsuarioSQL<Usuario extends Identificable> imple
 		UsuarioEntidad usuarioEntidad = new UsuarioEntidad();
 		EntityManager em = EntityManagerHelper.getEntityManager();
 		try {			
-			Usuario instance = em.find(getClase(), id);
+			Usuario instance = (Usuario) em.find(getClase(), id);
 
 			if (instance != null) {
 				em.refresh(instance);
