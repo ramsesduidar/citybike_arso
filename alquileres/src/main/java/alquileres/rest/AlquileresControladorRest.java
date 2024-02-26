@@ -26,6 +26,7 @@ public class AlquileresControladorRest {
 	@Context
 	private UriInfo uriInfo;
 
+	//curl -i -X POST --data "idBici=34" http://localhost:8080/api/usuarios/1/reservas
 	@POST
 	@Path("{idU}/reservas")
 	public Response crearReserva( @PathParam("idU") String idU,
@@ -37,6 +38,7 @@ public class AlquileresControladorRest {
 
 	}
 	
+	//curl -i -X PATCH http://localhost:8080/api/usuarios/1/reservas
 	@PATCH
 	@Path("{idU}/reservas")
 	public Response confirmarReserva( @PathParam("id") String id)
@@ -47,6 +49,7 @@ public class AlquileresControladorRest {
 		return Response.status(Response.Status.NO_CONTENT).build();
 	}
 	
+	//curl -i -X POST --data "idBici=34" http://localhost:8080/api/usuarios/1/alquileres
 	@POST
 	@Path("{id}/alquileres")
 	public Response alquilar( @PathParam("id") String idU,
@@ -58,6 +61,7 @@ public class AlquileresControladorRest {
 	}
 	
 	
+	//curl -i -X GET http://localhost:8080/api/usuarios/1
 	@GET
 	@Path("{id}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -69,6 +73,7 @@ public class AlquileresControladorRest {
 	}
 	
 	
+	//curl -i -X PATCH --data "idEstacion=55" http://localhost:8080/api/usuarios/1/alquileres
 	@PATCH
 	@Path("{id}/alquileres")
 	public Response dejarBicicleta( @PathParam("idU") String idU,
@@ -80,6 +85,7 @@ public class AlquileresControladorRest {
 	}
 	
 	
+	//curl -i -X PATCH http://localhost:8080/api/usuarios/1
 	@PATCH
 	@Path("{idU}")
 	public Response liberarBloqueo( @PathParam("idU") String id)
