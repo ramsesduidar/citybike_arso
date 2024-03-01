@@ -1,0 +1,19 @@
+package auth;
+
+import java.util.Map;
+
+public class JwtDemo {
+    //private static final String SECRET_KEY = "secret";
+
+    public static void main(String[] args) {
+        // 1. Generar un token JWT
+        String token = JwtUtil.generateJwtToken();
+        System.out.println("Token: " + token);
+
+        // 2. Simulacion de una petición con el token
+        Map<String, Object> claims = JwtUtil.validateTokenAndGetClaims(token);
+
+        // 3. Comprobar la autorización
+        JwtUtil.checkAuthorization(claims);
+    }
+}
