@@ -36,14 +36,18 @@ public class JwtUtil {
     public static void checkAuthorization(Map<String, Object> claims) {
 
         if (claims.containsKey(Rol.nombre_cabecera)) {
-            Rol userRole = (Rol) claims.get(Rol.nombre_cabecera);
-            if (!isValidRole(userRole)) {
+            String roleClaim = (String) claims.get(Rol.nombre_cabecera);
+            if (!isValidRole(roleClaim)) {
                 throw new RuntimeException("Unauthorized");
             }
         }
     }
 
-    private static boolean isValidRole(Rol userRole) {
-        return userRole == Rol.USUARIO || userRole == Rol.ADMIN;
+    private static boolean isValidRole(String userRole) {
+        return roleClaim.equals(Rol.USUARIO.toString()) || roleClaim.equals(Rol.ADMIN.toString());
     }
+    
+    public static Response unauthorized() {
+		return null;
+	}
 }
