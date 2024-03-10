@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 import alquileres.dominio.Reserva;
 import alquileres.dominio.Usuario;
+import dto.UsuarioDTO;
 import repositorios.EntidadNoEncontrada;
 import repositorios.FactoriaRepositorios;
 import repositorios.Repositorio;
@@ -117,11 +118,12 @@ public class ServicioAlquileres implements IServicioAlquileres{
 	 * y reservas del usuario, y el estado del servicio (bloqueado, tiempo de uso).
 	 */
 	@Override
-	public Usuario historialUsuario(String idUsuario) throws RepositorioException {
+	public UsuarioDTO historialUsuario(String idUsuario) throws RepositorioException {
 		
 		Usuario user = this.recuperarUsuario(idUsuario);
 		
-		return user;
+		
+		return new UsuarioDTO(user);
 	}
 
 	/*
@@ -150,6 +152,9 @@ public class ServicioAlquileres implements IServicioAlquileres{
 		
 		service.estacionarBici(idEstacion, idBici);
 		
+		System.out.println("llamo a repo despues de dejar bici");
+		repo.update(user);
+		
 		
 	}
 
@@ -167,6 +172,8 @@ public class ServicioAlquileres implements IServicioAlquileres{
 					+ "no está bloqueado");
 		
 		user.liberarBloqueo();
+		
+		repo.update(user);
 	}
 	
 	private Usuario recuperarUsuario(String idUsuario) throws RepositorioException {

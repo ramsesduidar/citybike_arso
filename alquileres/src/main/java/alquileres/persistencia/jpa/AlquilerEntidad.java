@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -16,19 +17,18 @@ import alquileres.dominio.Alquiler;
 
 @Entity
 @Table(name="AlquilerEntidad")
+@IdClass(AlquilerId.class)
 public class AlquilerEntidad implements Serializable{
-
-	@Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
-	private String idAlquiler;
 	
 	@JoinColumn(name = "idUsuario")
 	@ManyToOne
-	private String idUsuario;
+	private UsuarioEntidad usuario;
 	
+	@Id
 	@Column(name = "idBici")
 	private String idBici;
 	
+	@Id
 	@Column(name = "inicio", columnDefinition = "TIMESTAMP")
 	private LocalDateTime inicio;
 	
@@ -39,27 +39,19 @@ public class AlquilerEntidad implements Serializable{
 		
 	}
 	
-	public AlquilerEntidad(Alquiler alq, String idU) {
-		this.idUsuario = idU;
+	public AlquilerEntidad(Alquiler alq, UsuarioEntidad user) {
+		this.usuario = user;
 		this.idBici = alq.getIdBicicleta();
 		this.inicio = alq.getInicio();
 		this.fin = alq.getFin();
 	}
 
-	public String getIdAlquiler() {
-		return idAlquiler;
+	public UsuarioEntidad getIdUsuario() {
+		return usuario;
 	}
 
-	public void setIdAlquiler(String idAlquiler) {
-		this.idAlquiler = idAlquiler;
-	}
-
-	public String getIdUsuario() {
-		return idUsuario;
-	}
-
-	public void setIdUsuario(String idUsuario) {
-		this.idUsuario = idUsuario;
+	public void setIdUsuario(UsuarioEntidad usuario) {
+		this.usuario = usuario;
 	}
 
 	public String getIdBici() {
@@ -86,5 +78,9 @@ public class AlquilerEntidad implements Serializable{
 		this.fin = fin;
 	}
 	
+	@Override
+	public String toString() {
+		return "Alquiler [idUsuario=" + usuario.getIdUsuario() + "idBici=" + idBici + ", inicio=" + inicio + ", fin=" + fin + "]";
+	}
 	
 }

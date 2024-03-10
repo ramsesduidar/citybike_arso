@@ -2,6 +2,7 @@ package alquileres.programas;
 
 import alquileres.dominio.Usuario;
 import alquileres.servicios.IServicioAlquileres;
+import dto.UsuarioDTO;
 import repositorios.EntidadNoEncontrada;
 import repositorios.RepositorioException;
 import servicios.FactoriaServicios;
@@ -14,7 +15,7 @@ public class Ejercicio1 {
 		
 		service.alquilar("0", "10");
 		
-		Usuario user0 = service.historialUsuario("0");
+		UsuarioDTO user0 = service.historialUsuario("0");
 		
 		System.out.println("\n Despues de alquilar: "+user0);
 		

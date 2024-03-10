@@ -1,6 +1,7 @@
 package alquileres.servicios;
 
 import alquileres.dominio.Usuario;
+import dto.UsuarioDTO;
 import repositorios.EntidadNoEncontrada;
 import repositorios.RepositorioException;
 
@@ -12,7 +13,7 @@ public interface IServicioAlquileres {
 	
 	void alquilar(String idUsuario, String idBici) throws RepositorioException, EntidadNoEncontrada;
 	
-	Usuario historialUsuario(String idUsuario) throws RepositorioException;
+	UsuarioDTO historialUsuario(String idUsuario) throws RepositorioException;
 	
 	void dejarBicicleta(String idUsuario, String idEstacion) throws RepositorioException, EntidadNoEncontrada;
 	

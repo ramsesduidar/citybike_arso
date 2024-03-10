@@ -3,10 +3,9 @@ package repositorios;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 
 public class RepositorioMemoria<T extends Identificable> implements Repositorio<T, String> {
-
-	private int id = 0;
 	
 	private HashMap<String, T> entidades = new HashMap<>();
 	
@@ -15,8 +14,8 @@ public class RepositorioMemoria<T extends Identificable> implements Repositorio<
 	public String add(T entity) throws RepositorioException {
 		
 		if(entity.getId() == null) {
-			String id = String.valueOf(this.id++);
-			entity.setId(id);
+			
+			entity.setId(UUID.randomUUID().toString());
 		}
 		
 		this.entidades.put(entity.getId(), entity);	

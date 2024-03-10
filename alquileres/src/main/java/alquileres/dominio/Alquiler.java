@@ -22,6 +22,10 @@ public class Alquiler {
 		
 	}
 
+	public Alquiler() {
+		
+	}
+
 	public boolean activo() {
 		return fin == null;
 	}

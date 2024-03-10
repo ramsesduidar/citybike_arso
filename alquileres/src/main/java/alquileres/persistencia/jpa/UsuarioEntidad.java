@@ -24,10 +24,10 @@ public class UsuarioEntidad implements Serializable{
     @GeneratedValue(strategy=GenerationType.AUTO)
 	private String idUsuario;
 	
-	@OneToMany(mappedBy = "idUsuario", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
 	private List<ReservaEntidad> reservas;
 	
-	@OneToMany(mappedBy = "idUsuario", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
 	private List<AlquilerEntidad> alquileres;
 	
 	
@@ -44,14 +44,14 @@ public class UsuarioEntidad implements Serializable{
 	private List<AlquilerEntidad> transformAlquileres(List<Alquiler> alquileres2, String idU) {
 		
 		return alquileres2.stream()
-				.map(a -> new AlquilerEntidad(a, idU))
+				.map(a -> new AlquilerEntidad(a, this))
 				.collect(Collectors.toList());
 	}
 
 	private List<ReservaEntidad> transformReservas(List<Reserva> reservas2, String idU) {
 		
 		return reservas2.stream()
-				.map(r -> new ReservaEntidad(r, idU))
+				.map(r -> new ReservaEntidad(r, this))
 				.collect(Collectors.toList());
 	}
 
@@ -79,6 +79,9 @@ public class UsuarioEntidad implements Serializable{
 		this.alquileres = alquileres;
 	}
 	
-	
+	@Override
+	public String toString() {
+		return "Usuario [id=" + idUsuario + ", reservas=" + reservas + ", alquileres=" + alquileres + "]";
+	}
 	
 }
