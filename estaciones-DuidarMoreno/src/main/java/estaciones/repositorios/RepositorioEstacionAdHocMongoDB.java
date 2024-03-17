@@ -41,6 +41,7 @@ public class RepositorioEstacionAdHocMongoDB extends RepositorioMongoDB<Estacion
 	@Override
     public MongoCollection<Estacion> getColeccion() {
         return this.coleccion;
+        
     }
 	
 	public RepositorioEstacionAdHocMongoDB() {
