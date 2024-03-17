@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><geonames>
+    <entry>
+        <lang>es</lang>
+        <title>Puente Nuevo (Murcia)</title>
+        <summary>El puente Nuevo o puente de Hierro es un puente metálico de vigas parabólicas sobre el río Segura, finalizado en 1903 y situado en la ciudad de Murcia (Región de Murcia, España). Al ser el segundo puente urbano construido en la ciudad de Murcia sobre el río, fue llamado puente Nuevo para (...)</summary>
+        <feature/>
+        <countryCode>ES</countryCode>
+        <elevation>46</elevation>
+        <lat>37.9813</lat>
+        <lng>-1.1268</lng>
+        <wikipediaUrl>https://es.wikipedia.org/wiki/Puente_Nuevo_%28Murcia%29</wikipediaUrl>
+        <thumbnailImg/>
+        <rank>68</rank>
+        <distance>0.0669</distance>
+    </entry>
+    <entry>
+        <lang>es</lang>
+        <title>Diócesis de Cartagena</title>
+        <summary>La diócesis de Cartagena es una sede episcopal dependiente de la archidiócesis de Granada, en España. Su sede es la Catedral de Santa María, situada físicamente en la ciudad de Murcia.  (...)</summary>
+        <feature/>
+        <countryCode/>
+        <elevation>57</elevation>
+        <lat>37.9838</lat>
+        <lng>-1.1283</lng>
+        <wikipediaUrl>https://es.wikipedia.org/wiki/Di%C3%B3cesis_de_Cartagena</wikipediaUrl>
+        <thumbnailImg/>
+        <rank>84</rank>
+        <distance>0.3314</distance>
+    </entry>
+    <entry>
+        <lang>es</lang>
+        <title>Catedral de Murcia</title>
+        <summary>La Santa Iglesia Catedral de Santa María, conocida como catedral de Murcia, es el templo principal y sede de la Diócesis de Cartagena. Se encuentra en pleno casco antiguo de la ciudad de Murcia, en la Plaza Cardenal de Belluga (...)</summary>
+        <feature>landmark</feature>
+        <countryCode/>
+        <elevation>57</elevation>
+        <lat>37.9838</lat>
+        <lng>-1.1283</lng>
+        <wikipediaUrl>https://es.wikipedia.org/wiki/Catedral_de_Murcia</wikipediaUrl>
+        <thumbnailImg/>
+        <rank>96</rank>
+        <distance>0.3314</distance>
+    </entry>
+    <entry>
+        <lang>es</lang>
+        <title>Puente de los Peligros</title>
+        <summary>El puente de los Peligros o puente Viejo es un puente de piedra en arco sobre el río Segura, finalizado en 1742 y situado en la ciudad de Murcia (Región de Murcia, España). Es el más antiguo de los que hoy se conservan en la ciudad, de lo que se deriva el nombre de puente Viejo, en contraposición al (...)</summary>
+        <feature/>
+        <countryCode>  </countryCode>
+        <elevation>48</elevation>
+        <lat>37.9828</lat>
+        <lng>-1.1316</lng>
+        <wikipediaUrl>https://es.wikipedia.org/wiki/Puente_de_los_Peligros</wikipediaUrl>
+        <thumbnailImg/>
+        <rank>79</rank>
+        <distance>0.4259</distance>
+    </entry>
+    <entry>
+        <lang>es</lang>
+        <title>Murcia</title>
+        <summary>Murcia es una ciudad española, capital del municipio y de la comunidad autónoma de la Región de Murcia. Es el centro de la comarca natural de la Huerta de Murcia y de su área metropolitana. Está situada en el sudeste de la Península Ibérica a orillas del río Segura, en la denominada depresión (...)</summary>
+        <feature>city</feature>
+        <countryCode>ES</countryCode>
+        <elevation>47</elevation>
+        <lat>37.9833</lat>
+        <lng>-1.1333</lng>
+        <wikipediaUrl>https://es.wikipedia.org/wiki/Murcia</wikipediaUrl>
+        <thumbnailImg>https://www.geonames.org/img/wikipedia/149000/thumb-148650-100.jpg</thumbnailImg>
+        <rank>100</rank>
+        <distance>0.5861</distance>
+    </entry>
+</geonames>
