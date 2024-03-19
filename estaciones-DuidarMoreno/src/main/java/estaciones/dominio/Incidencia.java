@@ -2,13 +2,19 @@ package estaciones.dominio;
 
 import java.time.LocalDate;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.DocumentReference;
+
 import repositorios.Identificable;
 
-
+@Document(collection ="incidencia")
 public class Incidencia implements Identificable{
 
+	@Id
 	private String id;
 	
+	@DocumentReference(lazy=true)
 	private Bici bici;
 	
 	private String descripcion;

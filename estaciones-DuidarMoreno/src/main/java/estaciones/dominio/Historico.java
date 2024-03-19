@@ -6,13 +6,15 @@ import java.time.LocalDateTime;
 import org.bson.BsonType;
 import org.bson.codecs.pojo.annotations.BsonId;
 import org.bson.codecs.pojo.annotations.BsonRepresentation;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import repositorios.Identificable;
 
+@Document(collection ="historico")
 public class Historico implements Identificable{
 
-	@BsonId
-	@BsonRepresentation(BsonType.OBJECT_ID) 
+	@Id
 	private String id;
 	
 	private String idBici;
@@ -75,4 +77,12 @@ public class Historico implements Identificable{
 	public void setId(String id) {
 		this.id = id;
 	}
+
+	@Override
+	public String toString() {
+		return "Historico [id=" + id + ", idBici=" + idBici + ", idEstacion=" + idEstacion + ", fechaInicio="
+				+ fechaInicio + ", fechaFin=" + fechaFin + "]";
+	}
+	
+	
 }

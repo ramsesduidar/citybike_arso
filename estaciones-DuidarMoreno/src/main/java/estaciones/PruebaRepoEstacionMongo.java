@@ -11,7 +11,7 @@ import estaciones.dominio.Estacion;
 import estaciones.dominio.SitioTuristico;
 import estaciones.repositorios.RepositorioEstacion;
 
-public class PruebaRepoMongo {
+public class PruebaRepoEstacionMongo {
 
 	public static void main(String[] args) throws Exception {
 		

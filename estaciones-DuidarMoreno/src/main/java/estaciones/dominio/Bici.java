@@ -2,13 +2,19 @@ package estaciones.dominio;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
 import repositorios.Identificable;
 
-
+@Document(collection ="bici")
 public class Bici implements Identificable{
 
+	@Id
 	private String id;
 	
 	private String modelo;
@@ -23,6 +29,7 @@ public class Bici implements Identificable{
 	
 	private String idEstacion;
 	
+	@DocumentReference
 	private List<Incidencia> incidencias;
 
 	
@@ -34,6 +41,7 @@ public class Bici implements Identificable{
 		this.modelo = modelo;
 		this.fechaAlta = LocalDate.now();
 		this.estado = EstadoBici.DISPONIBLE;
+		this.incidencias = new LinkedList<>();
 	}
 	
 	public List<Incidencia> getIncidencias() {
@@ -127,10 +135,11 @@ public class Bici implements Identificable{
 	}
 	
 	private boolean containsIncidencia(String id) {
+		if(id==null) return false;
 		return this.incidencias.stream().anyMatch(i -> i.getId().equals(id));
 	}
 	
-	private Incidencia getIncidencia(String idI) {
+	public Incidencia getIncidencia(String idI) {
 		for (Incidencia incidencia : incidencias)
 			if (incidencia.getId().equals(idI))
 				return incidencia;
@@ -195,4 +204,6 @@ public class Bici implements Identificable{
 		}
 		return null;
 	}
+	
+	
 }

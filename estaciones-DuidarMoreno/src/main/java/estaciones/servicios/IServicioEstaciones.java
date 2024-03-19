@@ -2,6 +2,8 @@ package estaciones.servicios;
 
 import java.util.List;
 
+import org.springframework.dao.DataAccessException;
+
 import estaciones.dominio.Bici;
 import estaciones.dominio.Estacion;
 import estaciones.dominio.SitioTuristico;
@@ -13,34 +15,30 @@ import servicios.ServicioException;
 public interface IServicioEstaciones {
 
 	String altaEstacion(String nombre, int num_puestos, String direccion,
-			double latitud, double longitud) throws RepositorioException;
+			double latitud, double longitud) throws DataAccessException;
 	
-	Estacion recuperarEstacion(String id) throws RepositorioException, EntidadNoEncontrada;
+	Estacion recuperarEstacion(String id) throws DataAccessException, EntidadNoEncontrada;
 	
 	List<SitioTuristico> obtenerSitios(String id) throws Exception;
 	
-	void establecerSitios(String id, List<SitioTuristico> sitios) throws RepositorioException, EntidadNoEncontrada;
+	void establecerSitios(String id, List<SitioTuristico> sitios) throws DataAccessException, EntidadNoEncontrada;
 	
-	String altaBici(String modelo, String id_estacion) throws RepositorioException, EntidadNoEncontrada, ServicioException;
+	String altaBici(String modelo, String id_estacion) throws DataAccessException, EntidadNoEncontrada, ServicioException;
 	
-	BiciDTO recuperarBiciDTO(String id) throws RepositorioException, EntidadNoEncontrada;
+	BiciDTO recuperarBiciDTO(String id) throws DataAccessException, EntidadNoEncontrada;
 	
-	Bici recuperarBici(String id) throws RepositorioException, EntidadNoEncontrada;
+	Bici recuperarBici(String id) throws DataAccessException, EntidadNoEncontrada;
 	
-	void estacionarBici(String id_bici, String id_estacion) throws RepositorioException, EntidadNoEncontrada, ServicioException;
+	void estacionarBici(String id_bici, String id_estacion) throws DataAccessException, EntidadNoEncontrada, ServicioException;
 	
-	void estacionarBici(String id_bici) throws RepositorioException, EntidadNoEncontrada, ServicioException;
+	void estacionarBici(String id_bici) throws DataAccessException, EntidadNoEncontrada, ServicioException;
 	
-	void retirarBici(String id_bici) throws RepositorioException, ServicioException, EntidadNoEncontrada; 
+	void retirarBici(String id_bici) throws DataAccessException, ServicioException, EntidadNoEncontrada; 
 	
-	void darBajaBici(String id, String motivo) throws RepositorioException, EntidadNoEncontrada, ServicioException;
+	void darBajaBici(String id, String motivo) throws DataAccessException, EntidadNoEncontrada, ServicioException;
 	
-	Integer recuperarBiciPosicionCount(Double latitud, Double longitud) throws RepositorioException;
+	List<Bici> recuperarBiciPosicion(Double latitud, Double longitud) throws DataAccessException;
 	
-	List<Bici> recuperarBiciPosicion(Double latitud, Double longitud) throws RepositorioException;
-	
-	public List<BiciDTO> recuperarBiciPosicionLazy(Double latitud, Double longitud, int start, int max) throws RepositorioException;
-	
-	List<Estacion> recuperarEstacionPorSitios() throws RepositorioException;
+	List<Estacion> recuperarEstacionPorSitios() throws DataAccessException;
 	
 }
