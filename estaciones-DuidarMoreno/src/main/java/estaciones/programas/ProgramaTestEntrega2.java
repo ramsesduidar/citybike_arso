@@ -2,12 +2,17 @@ package estaciones.programas;
 
 import java.util.List;
 
+import org.springframework.boot.SpringApplication;
+import org.springframework.context.ConfigurableApplicationContext;
+
+import estaciones.EstacionesApp;
 import estaciones.dominio.Bici;
 import estaciones.dominio.Estacion;
 import estaciones.dominio.EstadoIncidencia;
 import estaciones.dominio.Incidencia;
 import estaciones.dominio.SitioTuristico;
-import estaciones.repositorios.RepositorioEstacionAdHocMongoDB;
+import estaciones.repositorios.RepositorioBiciMongoDB;
+import estaciones.repositorios.RepositorioEstacionMongoDB;
 import estaciones.servicios.IServicioEstaciones;
 import estaciones.servicios.IServicioIncidencias;
 import repositorios.RepositorioMongoDB;
@@ -16,6 +21,8 @@ public class ProgramaTestEntrega2 {
 
 	public static void main(String[] args) throws Exception {
 		
+		ConfigurableApplicationContext contexto =
+				SpringApplication.run(EstacionesApp.class, args);
 		//Murcia
 		double lat1 = 37.980906, lng1 = -1.1273963;
 		
@@ -29,10 +36,10 @@ public class ProgramaTestEntrega2 {
 		double lat4 = 43.2627100, lng4 = -2.9252800;
 		
 
-		IServicioIncidencias serviceIncidencias = FactoriaServicios.getServicio(IServicioIncidencias.class);
-		IServicioEstaciones service = FactoriaServicios.getServicio(IServicioEstaciones.class);
-		RepositorioEstacionAdHocMongoDB repoEstacion = FactoriaRepositorios.getRepositorio(Estacion.class);
-		RepositorioBiciAdHocMySQL repoBici = FactoriaRepositorios.getRepositorio(Bici.class);
+		IServicioIncidencias serviceIncidencias = contexto.getBean(IServicioIncidencias.class);
+		IServicioEstaciones service = contexto.getBean(IServicioEstaciones.class);
+		RepositorioEstacionMongoDB repoEstacion = contexto.getBean(RepositorioEstacionMongoDB.class);
+		RepositorioBiciMongoDB repoBici = contexto.getBean(RepositorioBiciMongoDB.class);
 		
 		//--------------------------SERVICIO ESTACIONES--------------------------
 		
@@ -52,8 +59,8 @@ public class ProgramaTestEntrega2 {
 		String idBici1 = service.altaBici("Bici1", id1);
 		String idBici2 = service.altaBici("Bici2", id2);
 		
-		String id_estacion = repoEstacion.buscarPrimeraLibre();
-		System.out.println(repoEstacion.getById(id_estacion));
+		String id_estacion = repoEstacion.findFirstLibre().get(0).getId();
+		System.out.println(repoEstacion.findById(id_estacion));
 		
 		// con esto todas las estaciones llenas
 		String idBici3 = service.altaBici("Bici3", id_estacion);
@@ -113,7 +120,7 @@ public class ProgramaTestEntrega2 {
 		
 		
 		System.out.println(serviceIncidencias.recuperarIncidencia(idIncidencia1).getDescripcion());
-		System.out.println(repoBici.getBiciByIncidencia(idIncidencia1).getModelo());
+		System.out.println(repoBici.findByIncidencias(idIncidencia1).get().getModelo());
 		
 		serviceIncidencias.cancelarIncidencia(idIncidencia1, "tonterias");
 		
@@ -127,7 +134,7 @@ public class ProgramaTestEntrega2 {
 		
 		serviceIncidencias.asignarIncidencia(idIncidencia2, "paco");
 		
-		Bici bici6 = repoBici.getBiciByIncidencia(idIncidencia2);
+		Bici bici6 = repoBici.findByIncidencias(idIncidencia2).get();
 		if(bici6.getIdEstacion()==null)
 			System.out.println("Se ha retirado con exito");
 		
@@ -154,5 +161,7 @@ public class ProgramaTestEntrega2 {
 		
 		serviceIncidencias.asignarIncidencia(idIncidencia3, "paco");
 		serviceIncidencias.resolverIncidenciaNoReparada(idIncidencia3, "no se puede reparar");
+		
+		contexto.close();
 	}
 }

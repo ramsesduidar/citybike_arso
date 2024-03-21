@@ -54,12 +54,7 @@ public class ServicioIncidencias implements IServicioIncidencias {
 		if (descripcion == null || descripcion.isEmpty())
 	        throw new IllegalArgumentException("descripcion: no debe ser nula");
 		
-		Optional<Bici> optional = this.repositorioBici.findById(id_bici);
-		
-		if(!optional.isPresent())
-			throw new EntidadNoEncontrada("No existe la bici con id: "+id_bici);
-		
-		Bici bici = optional.get();
+		Bici bici = serviceEstacion.recuperarBici(id_bici);
 		
 		if(bici.esDe_Baja() || ! bici.esDisponible())
 			throw new IllegalArgumentException("La bici está dada de baja, ne se pueden crear incidencias en ella");
@@ -83,6 +78,18 @@ public class ServicioIncidencias implements IServicioIncidencias {
 		return transformToDTOIncidencia(optional.get());
 		
 	}
+	
+	private Bici recuperarBiciPorIncidencia(String id) throws DataAccessException, EntidadNoEncontrada {
+		if (id == null || id.isEmpty())
+			throw new IllegalArgumentException("id: no debe ser nulo ni vacio");
+		
+		Optional<Bici> optional = repositorioBici.findByIncidencias(id);
+		
+		if(!optional.isPresent())
+			throw new EntidadNoEncontrada("No existe la bici con incidencia id :" + id);
+		
+		return optional.get();
+	}
 
 	@Override
 	public List<Incidencia> recuperarIncidenciasAbiertas() throws DataAccessException {
@@ -94,13 +101,7 @@ public class ServicioIncidencias implements IServicioIncidencias {
 	@Override
 	public void cancelarIncidencia(String id, String motivo_cierre) throws DataAccessException, EntidadNoEncontrada {
 
-		
-		Optional<Bici> optional = this.repositorioBici.findByIncidencias(id);
-		
-		if(!optional.isPresent())
-			throw new EntidadNoEncontrada("No existe la bici con incidencia: "+id);
-		
-		Bici bici = optional.get();
+		Bici bici = this.recuperarBiciPorIncidencia(id);
 		
 		if (bici.getEstadoIncidencia(id) != EstadoIncidencia.PENDIENTE)
 			throw new IllegalArgumentException("La incidencia con id " + id + " debe de estar en estado PENDIENTE para poder cancelarse");
@@ -116,12 +117,7 @@ public class ServicioIncidencias implements IServicioIncidencias {
 	@Override
 	public void asignarIncidencia(String id, String operario) throws DataAccessException, EntidadNoEncontrada {
 
-		Optional<Bici> optional = this.repositorioBici.findByIncidencias(id);
-		
-		if(!optional.isPresent())
-			throw new EntidadNoEncontrada("No existe la bici con incidencia: "+id);
-		
-		Bici bici = optional.get();
+		Bici bici = this.recuperarBiciPorIncidencia(id);
 		
 		if (bici.getEstadoIncidencia(id) != EstadoIncidencia.PENDIENTE)
 			throw new IllegalArgumentException("La incidencia con id " + id + " debe de estar en estado PENDIENTE para poder asignarla a un operario");
@@ -147,12 +143,7 @@ public class ServicioIncidencias implements IServicioIncidencias {
 	@Override
 	public void resolverIncidenciaReparada(String id, String motivo_cierre) throws DataAccessException, EntidadNoEncontrada {
 		
-		Optional<Bici> optional = this.repositorioBici.findByIncidencias(id);
-		
-		if(!optional.isPresent())
-			throw new EntidadNoEncontrada("No existe la bici con incidencia: "+id);
-		
-		Bici bici = optional.get();
+		Bici bici = this.recuperarBiciPorIncidencia(id);
 		
 		if (bici.getEstadoIncidencia(id) != EstadoIncidencia.ASIGNADA)
 			throw new IllegalArgumentException("La incidencia con id "+id+" debe de estar en estado ASIGNADA para poder resolverse");
@@ -177,12 +168,7 @@ public class ServicioIncidencias implements IServicioIncidencias {
 	@Override
 	public void resolverIncidenciaNoReparada(String id, String motivo_cierre) throws DataAccessException, EntidadNoEncontrada {
 		
-		Optional<Bici> optional = this.repositorioBici.findByIncidencias(id);
-		
-		if(!optional.isPresent())
-			throw new EntidadNoEncontrada("No existe la bici con incidencia: "+id);
-		
-		Bici bici = optional.get();
+		Bici bici = this.recuperarBiciPorIncidencia(id);
 		
 		if (bici.getEstadoIncidencia(id) != EstadoIncidencia.ASIGNADA)
 			throw new IllegalArgumentException("La incidencia con id "+id+" debe de estar en estado ASIGNADA para poder resolverse");

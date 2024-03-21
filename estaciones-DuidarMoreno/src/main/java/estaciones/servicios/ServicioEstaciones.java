@@ -124,12 +124,7 @@ public class ServicioEstaciones implements IServicioEstaciones{
 	public String altaBici(String modelo, String id_estacion) throws DataAccessException, EntidadNoEncontrada, ServicioException {
 		Bici bici = new Bici(modelo);
 		
-		Optional<Estacion> optional = repositorioEstacion.findById(id_estacion);
-		
-		if(!optional.isPresent())
-			throw new EntidadNoEncontrada("No existe la estacion con id :" + id_estacion);
-		
-		Estacion estacion = optional.get();
+		Estacion estacion = this.recuperarEstacion(id_estacion);
 		
 		if(estacion.estaLlena())
 			throw new ServicioException("Creación de la bici " +modelo+" cancelada-"
@@ -172,12 +167,7 @@ public class ServicioEstaciones implements IServicioEstaciones{
 	@Override
 	public void estacionarBici(String id_bici, String id_estacion) throws DataAccessException, EntidadNoEncontrada, ServicioException {
 		
-		Optional<Bici> optional = repositorioBici.findById(id_bici);
-		
-		if(!optional.isPresent())
-			throw new EntidadNoEncontrada("No existe la bici con id :" + id_bici);
-		
-		Bici bici = optional.get();
+		Bici bici = this.recuperarBici(id_bici);
 		
 		if(!bici.esDisponible())
 			throw new ServicioException("La bici con id "+ id_bici + " no esta disponible ");
@@ -186,12 +176,7 @@ public class ServicioEstaciones implements IServicioEstaciones{
 			throw new ServicioException("La bici ya está estacionada en la estacion con id: " +  bici.getIdEstacion());
 		
 		
-		Optional<Estacion> opestacion = repositorioEstacion.findById(id_estacion);
-		
-		if(!opestacion.isPresent())
-			throw new EntidadNoEncontrada("No existe la estacion con id :" + id_estacion);
-		
-		Estacion estacion = opestacion.get();
+		Estacion estacion = this.recuperarEstacion(id_estacion);
 		
 		if(estacion.containsBici(id_bici))
 			throw new ServicioException("La bici ya está estacionada en la estacion con id: " +  id_estacion);
@@ -225,23 +210,15 @@ public class ServicioEstaciones implements IServicioEstaciones{
 
 	@Override
 	public void retirarBici(String id_bici) throws DataAccessException, EntidadNoEncontrada, ServicioException {
-		Optional<Bici> optional = repositorioBici.findById(id_bici);
 		
-		if(!optional.isPresent())
-			throw new EntidadNoEncontrada("No existe la bici con id :" + id_bici);
+		Bici bici = this.recuperarBici(id_bici);
 		
-		Bici bici = optional.get();
 		String id_estacion = bici.getIdEstacion();
 		
 		if(id_estacion == null)
 			throw new ServicioException("La bici no está estacionada en ninguna estacion");
 		
-		Optional<Estacion> opestacion = repositorioEstacion.findById(id_estacion);
-		
-		if(!opestacion.isPresent())
-			throw new EntidadNoEncontrada("No existe la estacion con id :" + id_estacion);
-		
-		Estacion estacion = opestacion.get();
+		Estacion estacion = this.recuperarEstacion(id_estacion);
 		
 		bici.setIdEstacion(null);
 		if (estacion.retirarBici(id_bici) == false)
@@ -258,12 +235,7 @@ public class ServicioEstaciones implements IServicioEstaciones{
 	@Override
 	public void darBajaBici(String id, String motivo) throws DataAccessException, EntidadNoEncontrada, ServicioException {
 		
-		Optional<Bici> optional = repositorioBici.findById(id);
-		
-		if(!optional.isPresent())
-			throw new EntidadNoEncontrada("No existe la bici con id :" + id);
-		
-		Bici bici = optional.get();
+		Bici bici = this.recuperarBici(id);
 		
 		if(bici.esDe_Baja())
 			throw new ServicioException("La bici con id "+ id + " ya está dada de baja ");
@@ -317,6 +289,39 @@ public class ServicioEstaciones implements IServicioEstaciones{
 		return repositorioEstacion.getEstacionesPorSitios();
 	}
 	
+	// Funciones adicionales para entrega 2
 	
-
+	public List<Estacion> recuperarTodasEstaciones() throws DataAccessException {
+		
+		List<Estacion> estaciones = new LinkedList<>();
+		
+		repositorioEstacion.findAll().forEach(e -> estaciones.add(e));
+		
+		return estaciones;
+	}
+	
+	// ¿a lo mejor crear un metodo para usuarios normales y otro para gestores?
+	public List<Bici> getBicisFromEstacion(String id_estacion) throws DataAccessException, EntidadNoEncontrada{
+		
+		List<Bici> bicis = new LinkedList<>();
+		
+		Estacion estacion = this.recuperarEstacion(id_estacion);
+		
+		estacion.getIdBicis()
+					.stream()
+					.map(id -> {
+						try {
+							return this.recuperarBici(id);
+						} catch (DataAccessException | EntidadNoEncontrada e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+							return null;
+						}
+					})
+					.forEach(bici -> {if (bici != null) bicis.add(bici);});
+		
+		return bicis;
+	}
+	
+	
 }
