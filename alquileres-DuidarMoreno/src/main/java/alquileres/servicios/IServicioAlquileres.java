@@ -13,7 +13,7 @@ public interface IServicioAlquileres {
 	
 	void alquilar(String idUsuario, String idBici) throws RepositorioException, EntidadNoEncontrada;
 	
-	UsuarioDTO historialUsuario(String idUsuario) throws RepositorioException;
+	Usuario historialUsuario(String idUsuario) throws RepositorioException;
 	
 	void dejarBicicleta(String idUsuario, String idEstacion) throws RepositorioException, EntidadNoEncontrada;
 	

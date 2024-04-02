@@ -15,7 +15,7 @@ public class Ejercicio1 {
 		
 		service.alquilar("0", "10");
 		
-		UsuarioDTO user0 = service.historialUsuario("0");
+		UsuarioDTO user0 = new UsuarioDTO(service.historialUsuario("0"));
 		
 		System.out.println("\n Despues de alquilar: "+user0);
 		

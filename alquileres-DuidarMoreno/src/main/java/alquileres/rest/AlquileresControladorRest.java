@@ -16,8 +16,10 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
+import alquileres.dominio.Usuario;
 import alquileres.servicios.IServicioAlquileres;
 import auth.Rol;
+import dto.UsuarioDTO;
 import servicios.FactoriaServicios;
 
 @Path("usuarios")
@@ -74,8 +76,10 @@ public class AlquileresControladorRest {
 	public Response getHistorialUsuario( @PathParam("id") String id)
 			throws Exception {
 		
+		Usuario user = servicio.historialUsuario(id);
+		
 		return Response.status(Response.Status.OK)
-				.entity(servicio.historialUsuario(id)).build();
+				.entity(new UsuarioDTO(user)).build();
 	}
 	
 	

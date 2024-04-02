@@ -118,12 +118,12 @@ public class ServicioAlquileres implements IServicioAlquileres{
 	 * y reservas del usuario, y el estado del servicio (bloqueado, tiempo de uso).
 	 */
 	@Override
-	public UsuarioDTO historialUsuario(String idUsuario) throws RepositorioException {
+	public Usuario historialUsuario(String idUsuario) throws RepositorioException {
 		
 		Usuario user = this.recuperarUsuario(idUsuario);
 		
 		
-		return new UsuarioDTO(user);
+		return user;
 	}
 
 	/*
