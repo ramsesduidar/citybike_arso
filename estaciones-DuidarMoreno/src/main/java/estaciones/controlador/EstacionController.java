@@ -2,6 +2,10 @@ package estaciones.controlador;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -14,6 +18,7 @@ import estaciones.dominio.Estacion;
 import estaciones.dto.BiciDTO;
 import estaciones.dto.CrearEstacionDTO;
 import estaciones.dto.EstacionDTO;
+import estaciones.servicios.IServicioEstaciones;
 import estaciones.servicios.ServicioEstaciones;
 import repositorios.EntidadNoEncontrada;
 import servicios.ServicioException;
@@ -23,19 +28,21 @@ import servicios.ServicioException;
 public class EstacionController {
 
     @Autowired
-    private ServicioEstaciones servicio;
+    private IServicioEstaciones servicio;
     
     public EstacionController() {
     	
     }
 
     @GetMapping("/")
-    public List<EstacionDTO> getAllEstaciones() throws DataAccessException{
+    public Page<EstacionDTO> getAllEstaciones(@RequestParam int page,
+    										  @RequestParam int size) throws DataAccessException{
         
-    	return servicio.recuperarTodasEstaciones()
-        		.stream()
-        		.map( e -> new EstacionDTO(e))
-        		.collect(Collectors.toList());
+    	Pageable paginacion =
+    			PageRequest.of(page, size, Sort.by("nombre").ascending());
+    	
+    	return servicio.recuperarTodasEstacionesPaginado(paginacion)
+        		.map( e -> new EstacionDTO(e));
     }
 
     @GetMapping("/{id}")
@@ -57,18 +64,22 @@ public class EstacionController {
     }
 
     @GetMapping("/{id}/bicis")
-    public List<BiciDTO> getBicisEnEstacion(@PathVariable String id) throws DataAccessException, EntidadNoEncontrada {
+    public Page<BiciDTO> getBicisEnEstacion(@PathVariable String id,
+    										@RequestParam int page,
+    										@RequestParam int size) throws DataAccessException, EntidadNoEncontrada {
         
-    	return servicio.getBicisFromEstacion(id)
-    			.stream()
-    			.map(bici -> new BiciDTO(bici))
-    			.collect(Collectors.toList());
+    	Pageable paginacion =
+    			PageRequest.of(page, size, Sort.by("modelo").ascending());
+    	
+    	return servicio.getBicisFromEstacionPaginado(id, paginacion)
+    			.map(bici -> new BiciDTO(bici));
+    			
     			
     }
 
     @PutMapping("/{id}/bicis")
     public ResponseEntity<Void> estacionarBici(@PathVariable String id, 
-    										@RequestParam String idBici) throws DataAccessException, EntidadNoEncontrada, ServicioException {
+    										@RequestBody String idBici) throws DataAccessException, EntidadNoEncontrada, ServicioException {
         
     	servicio.estacionarBici(idBici, id);
     	

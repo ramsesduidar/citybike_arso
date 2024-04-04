@@ -8,6 +8,8 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.geo.Point;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -263,11 +265,6 @@ public class ServicioEstaciones implements IServicioEstaciones{
 		return bicis;
 	}
 	
-	
-	private BiciDTO transformToDTOBici(Bici bici) {        
-        return  new BiciDTO(bici);   
-    }
-	
 
 	@Override
 	public List<Estacion> recuperarEstacionPorSitios() throws DataAccessException {
@@ -286,25 +283,25 @@ public class ServicioEstaciones implements IServicioEstaciones{
 		return estaciones;
 	}
 	
+	public Page<Estacion> recuperarTodasEstacionesPaginado(Pageable pageable) throws DataAccessException {
+		
+		Page<Estacion> estaciones = repositorioEstacion.findAll(pageable);
+		
+		return estaciones;
+	}
+	
 	// ¿a lo mejor crear un metodo para usuarios normales y otro para gestores?
 	public List<Bici> getBicisFromEstacion(String id_estacion) throws DataAccessException, EntidadNoEncontrada{
 		
-		List<Bici> bicis = new LinkedList<>();
+		List<Bici> bicis = this.repositorioBici.findByIdEstacion(id_estacion);
 		
-		Estacion estacion = this.recuperarEstacion(id_estacion);
 		
-		estacion.getIdBicis()
-					.stream()
-					.map(id -> {
-						try {
-							return this.recuperarBici(id);
-						} catch (DataAccessException | EntidadNoEncontrada e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-							return null;
-						}
-					})
-					.forEach(bici -> {if (bici != null) bicis.add(bici);});
+		return bicis;
+	}
+	
+	public Page<Bici> getBicisFromEstacionPaginado(String id_estacion, Pageable pageable) throws DataAccessException, EntidadNoEncontrada{
+		
+		Page<Bici> bicis = this.repositorioBici.findByIdEstacion(id_estacion, pageable);
 		
 		return bicis;
 	}

@@ -43,7 +43,7 @@ public class BiciController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> bajaBici(@PathVariable String id, @RequestParam String motivo) throws DataAccessException, EntidadNoEncontrada, ServicioException {
+    public ResponseEntity<Void> bajaBici(@PathVariable String id, @RequestBody String motivo) throws DataAccessException, EntidadNoEncontrada, ServicioException {
         
     	servicio.darBajaBici(id, motivo);
     	return ResponseEntity.ok().build();
