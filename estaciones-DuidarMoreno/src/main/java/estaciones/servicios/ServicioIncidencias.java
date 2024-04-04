@@ -83,7 +83,7 @@ public class ServicioIncidencias implements IServicioIncidencias {
 		if (id == null || id.isEmpty())
 			throw new IllegalArgumentException("id: no debe ser nulo ni vacio");
 		
-		Optional<Bici> optional = repositorioBici.findByIncidencias(id);
+		Optional<Bici> optional = repositorioBici.findByIncidenciasId(id);
 		
 		if(!optional.isPresent())
 			throw new EntidadNoEncontrada("No existe la bici con incidencia id :" + id);
