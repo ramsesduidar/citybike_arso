@@ -1,37 +1,47 @@
 package auth2;
 
-import java.util.List;
+import java.util.Date;
+import java.util.Map;
+import java.util.function.Function;
 
-import auth2.JWTAuthenticationFilter;
-import auth2.SecurityConfig;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 
+@Component
 public class JwtUtils {
 
-    private static final String SECRET_KEY = "my-secret-key";
+	@Value("${jwt.secret}")
+    private String SECRET_KEY;
 
-    public static String generateToken(String username, List<String> roles) {
-        Claims claims = Jwts.claims().setSubject(username);
-        claims.put("roles", roles);
-
+    public String generateToken(Map<String, Object> claims) {
         return Jwts.builder()
-            .setClaims(claims)
-            .signWith(SignatureAlgorithm.HS512, SECRET_KEY)
-            .compact();
+                .setClaims(claims)
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10))
+                .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
+                .compact();
     }
 
-    public static boolean validateToken(String token) {
+    public boolean validateToken(String token) {
         try {
             Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token);
             return true;
-        } catch (Exception e) {
+        } catch (Exception ex) {
             return false;
         }
     }
 
-    public static String getUsernameFromToken(String token) {
-        return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody().getSubject();
+    public Claims getClaims(String token) {
+        return Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody();
+    }
+
+    public <T> T getClaimValue(String token, Function<Claims, T> claimsResolver) {
+        final Claims claims = getClaims(token);
+        return claimsResolver.apply(claims);
     }
 
 }
