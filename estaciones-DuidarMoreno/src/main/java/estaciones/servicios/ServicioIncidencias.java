@@ -68,14 +68,14 @@ public class ServicioIncidencias implements IServicioIncidencias {
 	}
 
 	@Override
-	public IncidenciaDTO recuperarIncidencia(String id) throws DataAccessException, EntidadNoEncontrada {
+	public Incidencia recuperarIncidencia(String id) throws DataAccessException, EntidadNoEncontrada {
 		
 		Optional<Incidencia> optional = repositorioIncidencia.findById(id);
 		
 		if(!optional.isPresent())
 			throw new EntidadNoEncontrada("No existe la incidencia con id: "+id);
 			
-		return transformToDTOIncidencia(optional.get());
+		return optional.get();
 		
 	}
 	

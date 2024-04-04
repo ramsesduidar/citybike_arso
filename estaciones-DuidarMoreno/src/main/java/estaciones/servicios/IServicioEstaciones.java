@@ -25,8 +25,6 @@ public interface IServicioEstaciones {
 	
 	String altaBici(String modelo, String id_estacion) throws DataAccessException, EntidadNoEncontrada, ServicioException;
 	
-	BiciDTO recuperarBiciDTO(String id) throws DataAccessException, EntidadNoEncontrada;
-	
 	Bici recuperarBici(String id) throws DataAccessException, EntidadNoEncontrada;
 	
 	void estacionarBici(String id_bici, String id_estacion) throws DataAccessException, EntidadNoEncontrada, ServicioException;

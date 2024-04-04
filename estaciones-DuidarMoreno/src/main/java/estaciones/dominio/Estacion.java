@@ -4,16 +4,12 @@ import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.bson.BsonType;
-import org.bson.codecs.pojo.annotations.BsonId;
-import org.bson.codecs.pojo.annotations.BsonRepresentation;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.GeoSpatialIndexType;
 import org.springframework.data.mongodb.core.index.GeoSpatialIndexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import org.springframework.data.geo.Point;
-import com.mongodb.client.model.geojson.Position;
 
 import repositorios.Identificable;
 
@@ -141,12 +137,14 @@ public class Estacion implements Identificable {
 	}
 	
 	public boolean estaLlena() {
-		int contador = 0;
-		for(String b: this.idBicis)
-			contador++;
 		
-		return this.numPuestos == contador;
+		return this.numPuestos >= this.idBicis.size();
 	}
+	
+	public int huecosLibres() {
+		return this.idBicis.size();
+	}
+	
 	public boolean estacionarBici(String id_bici) {
 		if(!this.idBicis.contains(id_bici) && !this.estaLlena())
 			return this.idBicis.add(id_bici);

@@ -17,7 +17,7 @@ public interface IServicioIncidencias {
 	// Devuelve el id de la Incidencia
 	void crearIncidencia(String bici, String descripcion) throws DataAccessException, EntidadNoEncontrada;
 	
-	IncidenciaDTO recuperarIncidencia(String id) throws DataAccessException, EntidadNoEncontrada;
+	Incidencia recuperarIncidencia(String id) throws DataAccessException, EntidadNoEncontrada;
 	
 	List<Incidencia> recuperarIncidenciasAbiertas() throws DataAccessException;
 	

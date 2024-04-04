@@ -149,20 +149,6 @@ public class ServicioEstaciones implements IServicioEstaciones{
 		
 		return optional.get();
 	}
-	
-	@Override
-	public BiciDTO recuperarBiciDTO(String id) throws DataAccessException, EntidadNoEncontrada {
-		if (id == null || id.isEmpty())
-			throw new IllegalArgumentException("id: no debe ser nulo ni vacio");
-		
-		Optional<Bici> optional = repositorioBici.findById(id);
-		
-		if(!optional.isPresent())
-			throw new EntidadNoEncontrada("No existe la bici con id :" + id);
-		
-		
-		return transformToDTOBici(optional.get());
-	}
 
 	@Override
 	public void estacionarBici(String id_bici, String id_estacion) throws DataAccessException, EntidadNoEncontrada, ServicioException {

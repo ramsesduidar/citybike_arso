@@ -1,45 +1,52 @@
 package estaciones.controlador;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import org.springframework.dao.DataAccessException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.util.List;
-import java.util.Optional;
+import java.net.URI;
 
-import estaciones.dominio.Bici;
-import estaciones.repositorios.*;
+import estaciones.dto.BiciDTO;
+import estaciones.dto.CrearBiciDTO;
+import estaciones.servicios.ServicioEstaciones;
+import repositorios.EntidadNoEncontrada;
+import servicios.ServicioException;
 
 @RestController
 @RequestMapping("/bicis")
 public class BiciController {
 
     @Autowired
-    private RepositorioBici repositorioBici;
+    private ServicioEstaciones servicio;
 
-    @GetMapping("/")
-    public List<Bici> getAllBicis() {
-        return repositorioBici.findAll();
-    }
-
-    @GetMapping("/{id}")
-    public Optional<Bici> getBiciById(@PathVariable String id) {
-        return repositorioBici.findById(id);
+    public BiciController() {
+    	
     }
 
     @PostMapping("/")
-    public Bici createBici(@RequestBody Bici bici) {
-        return repositorioBici.create(bici);
+    public ResponseEntity<Void> createBici(@RequestBody CrearBiciDTO dto) throws DataAccessException, EntidadNoEncontrada, ServicioException {
+    	
+    	String id = this.servicio.altaBici(dto.getModelo(), dto.getIdEstacion());
+    			
+    	// Construye la URL completa del nuevo recurso
+    	URI nuevaURL = ServletUriComponentsBuilder.fromCurrentRequest()
+    			.path("/{id}").buildAndExpand(id).toUri();
+    	
+    	return ResponseEntity.created(nuevaURL).build();
+    }
+    
+    @GetMapping("/{id}")
+    public BiciDTO getBici(@PathVariable String id) throws DataAccessException, EntidadNoEncontrada {
+        return new BiciDTO(servicio.recuperarBici(id));
     }
 
     @PutMapping("/{id}")
-    public Bici updateBici(@PathVariable String id, @RequestBody Bici bici) {
-        return repositorioBici.update(id, bici);
+    public ResponseEntity<Void> bajaBici(@PathVariable String id, @RequestParam String motivo) throws DataAccessException, EntidadNoEncontrada, ServicioException {
+        
+    	servicio.darBajaBici(id, motivo);
+    	return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("/{id}")
-    public void deleteBici(@PathVariable String id) {
-    	repositorioBici.delete(id);
-    }
 }
