@@ -13,7 +13,7 @@ public class JwtUtil {
     private static final String SECRET_KEY = "secret";
 
     // GENERACIÓN DEL TOKEN
-    public String generateJwtToken(Map<String, String> claims) {
+    public static String generateJwtToken(Map<String, Object> claims) {
     	
     	Date caducidad = Date.from(
 				Instant.now()
@@ -36,21 +36,6 @@ public class JwtUtil {
                 .parseClaimsJws(token)
                 .getBody();
     }
-
-	public boolean validateToken(String token) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	public String generateToken(Map<String, Object> claims) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public Claims getClaims(String token) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
     /* esto se hace en el filtro
     public static void checkAuthorization(Map<String, Object> claims) {

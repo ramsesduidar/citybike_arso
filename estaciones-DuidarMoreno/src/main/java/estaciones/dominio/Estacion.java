@@ -142,7 +142,7 @@ public class Estacion implements Identificable {
 	}
 	
 	public int huecosLibres() {
-		return this.idBicis.size();
+		return this.numPuestos - this.idBicis.size();
 	}
 	
 	public boolean estacionarBici(String id_bici) {

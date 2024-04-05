@@ -2,12 +2,15 @@ package auth2;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -20,9 +23,6 @@ import io.jsonwebtoken.Claims;
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {
 
-    @Autowired
-    private JwtUtils jwtUtil;
-
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws ServletException, IOException {
@@ -30,14 +30,26 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         String authorizationHeader = request.getHeader("Authorization");
 
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
-            String token = authorizationHeader.substring(7);
-            if (jwtUtil.validateToken(token)) {
-                Claims claims = jwtUtil.getClaims(token);
-                ArrayList<GrantedAuthority> authorities = new ArrayList<>();
-                authorities.add(new SimpleGrantedAuthority((String) claims.get("rol")));
+            String token = authorizationHeader.substring(7).trim();
+            try {
+            	Claims claims = JwtUtils.validateTokenAndGetClaims(token); 
+            	Set<String> roles = new HashSet<>(
+    					Arrays.asList(claims.get("Roles", String.class).split(",")));
+            	
+            	
+            	ArrayList<GrantedAuthority> authorities = new ArrayList<>();
+            	roles.forEach(rol -> authorities.add(new SimpleGrantedAuthority(rol)));
+                
+                
                 UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(
                         claims.getSubject(), null, authorities);
+                
+                System.out.println("Accedçso de: " + auth);
+                
                 SecurityContextHolder.getContext().setAuthentication(auth);
+            } catch(Exception e) {
+            	response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Error al verificar el token JWT: " + e.getMessage());
+                return;
             }
         }
 

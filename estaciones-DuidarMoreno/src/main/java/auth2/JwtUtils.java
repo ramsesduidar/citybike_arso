@@ -1,5 +1,6 @@
 package auth2;
 
+import java.time.Instant;
 import java.util.Date;
 import java.util.Map;
 import java.util.function.Function;
@@ -15,24 +16,25 @@ import io.jsonwebtoken.SignatureAlgorithm;
 public class JwtUtils {
 
 	@Value("${jwt.secret}")
-    private String SECRET_KEY;
+    private static String SECRET_KEY;
 
-    public String generateToken(Map<String, Object> claims) {
+    public static String generateToken(Map<String, Object> claims) {
         return Jwts.builder()
                 .setClaims(claims)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10))
+                .setExpiration(Date.from(
+        				Instant.now()
+        				.plusSeconds(60))) // 1 minuto de validez
                 .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
                 .compact();
     }
 
-    public boolean validateToken(String token) {
-        try {
-            Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token);
-            return true;
-        } catch (Exception ex) {
-            return false;
-        }
+ // VALIDACIÓN Y OBTENCIÓN DE CLAIMS
+    public static Claims validateTokenAndGetClaims(String token) {
+        return Jwts.parser()
+                .setSigningKey(SECRET_KEY)
+                .parseClaimsJws(token)
+                .getBody();
     }
 
     public Claims getClaims(String token) {

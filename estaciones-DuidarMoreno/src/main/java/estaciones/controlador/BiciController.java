@@ -3,6 +3,7 @@ package estaciones.controlador;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -25,7 +26,8 @@ public class BiciController {
     	
     }
 
-    @PostMapping("/")
+    @PostMapping()
+    @PreAuthorize("hasAuthority('Gestor')")
     public ResponseEntity<Void> createBici(@RequestBody CrearBiciDTO dto) throws DataAccessException, EntidadNoEncontrada, ServicioException {
     	
     	String id = this.servicio.altaBici(dto.getModelo(), dto.getIdEstacion());
@@ -43,6 +45,7 @@ public class BiciController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('Gestor')")
     public ResponseEntity<Void> bajaBici(@PathVariable String id, @RequestBody String motivo) throws DataAccessException, EntidadNoEncontrada, ServicioException {
         
     	servicio.darBajaBici(id, motivo);

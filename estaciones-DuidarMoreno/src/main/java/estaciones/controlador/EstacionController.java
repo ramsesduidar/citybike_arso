@@ -7,12 +7,20 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import javax.servlet.http.HttpServletRequest;
 
 import estaciones.dominio.Estacion;
 import estaciones.dto.BiciDTO;
@@ -30,11 +38,15 @@ public class EstacionController {
     @Autowired
     private IServicioEstaciones servicio;
     
+    @Autowired
+    private HttpServletRequest request;
+    
     public EstacionController() {
     	
     }
 
-    @GetMapping("/")
+    @GetMapping()
+    @PreAuthorize("hasAuthority('Usuario')")
     public Page<EstacionDTO> getAllEstaciones(@RequestParam int page,
     										  @RequestParam int size) throws DataAccessException{
         
@@ -46,11 +58,13 @@ public class EstacionController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('Usuario')")
     public EstacionDTO getEstacionById(@PathVariable String id) throws DataAccessException, EntidadNoEncontrada {
         return new EstacionDTO(servicio.recuperarEstacion(id));
     }
 
-    @PostMapping("/")
+    @PostMapping()
+    @PreAuthorize("hasAuthority('Gestor')")
     public ResponseEntity<Void> createEstacion(@RequestBody CrearEstacionDTO dto) throws DataAccessException {
     	
     	String id = this.servicio.altaEstacion(dto.getNombre(), dto.getNumPuestos(), 
@@ -64,12 +78,22 @@ public class EstacionController {
     }
 
     @GetMapping("/{id}/bicis")
+    @PreAuthorize("hasAuthority('Gestor') or hasRole('Usuario')")
     public Page<BiciDTO> getBicisEnEstacion(@PathVariable String id,
     										@RequestParam int page,
     										@RequestParam int size) throws DataAccessException, EntidadNoEncontrada {
         
     	Pageable paginacion =
     			PageRequest.of(page, size, Sort.by("modelo").ascending());
+    	
+    	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    	
+    	System.out.println("<Acceso de: " + auth);
+    	
+    	ArrayList<String> roles = new ArrayList<>();
+    	auth.getAuthorities().forEach(a -> roles.add(a.getAuthority()));
+    	
+    	System.out.println("Roles: " + roles);
     	
     	return servicio.getBicisFromEstacionPaginado(id, paginacion)
     			.map(bici -> new BiciDTO(bici));
@@ -78,6 +102,7 @@ public class EstacionController {
     }
 
     @PutMapping("/{id}/bicis")
+    @PreAuthorize("hasAuthority('Usuario')")
     public ResponseEntity<Void> estacionarBici(@PathVariable String id, 
     										@RequestBody String idBici) throws DataAccessException, EntidadNoEncontrada, ServicioException {
         
