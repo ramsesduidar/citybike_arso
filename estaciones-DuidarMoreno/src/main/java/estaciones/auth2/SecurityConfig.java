@@ -1,4 +1,4 @@
-package auth2;
+package estaciones.auth2;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -9,7 +9,12 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+/*
+ * Si se obtiene token por Oauth2, se dara el rol Gestor
+ * Si se obtiene por ruta /login ver el ServicioAuth
+ */
 @Configuration
+@EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
@@ -23,15 +28,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.httpBasic().disable()
                 .authorizeRequests()
-                .antMatchers("/publico/**").permitAll()
+                .antMatchers("/auth/**").permitAll()
                 .antMatchers("/estaciones/**", "/bicis/**").authenticated()
                 .and()
-                .oauth2Login().successHandler(successHandler)
+                .oauth2Login().successHandler(this.successHandler)
                 .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
-        httpSecurity.addFilterBefore(authenticationRequestFilter, UsernamePasswordAuthenticationFilter.class);
+        httpSecurity.addFilterBefore(this.authenticationRequestFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
 }

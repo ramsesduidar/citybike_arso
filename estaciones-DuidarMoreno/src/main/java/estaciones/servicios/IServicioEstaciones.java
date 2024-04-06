@@ -6,6 +6,8 @@ import java.util.List;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Order;
+import org.springframework.data.util.Streamable;
 
 import estaciones.dominio.Bici;
 import estaciones.dominio.Estacion;
@@ -49,5 +51,7 @@ public interface IServicioEstaciones {
 	Page<Estacion> recuperarTodasEstacionesPaginado(Pageable pageable) throws DataAccessException;
 	
 	Page<Bici> getBicisFromEstacionPaginado(String id_estacion, Pageable pageable) throws DataAccessException, EntidadNoEncontrada;
+
+	Page<Bici> getBicisDisponiblesFromEstacionPaginado(String id_estacion, Pageable paginacion) throws DataAccessException, EntidadNoEncontrada;
 	
 }

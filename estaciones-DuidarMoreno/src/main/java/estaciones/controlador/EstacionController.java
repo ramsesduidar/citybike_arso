@@ -78,7 +78,7 @@ public class EstacionController {
     }
 
     @GetMapping("/{id}/bicis")
-    @PreAuthorize("hasAuthority('Gestor') or hasRole('Usuario')")
+    @PreAuthorize("hasAuthority('Gestor') or hasAuthority('Usuario')")
     public Page<BiciDTO> getBicisEnEstacion(@PathVariable String id,
     										@RequestParam int page,
     										@RequestParam int size) throws DataAccessException, EntidadNoEncontrada {
@@ -88,12 +88,14 @@ public class EstacionController {
     	
     	Authentication auth = SecurityContextHolder.getContext().getAuthentication();
     	
-    	System.out.println("<Acceso de: " + auth);
-    	
     	ArrayList<String> roles = new ArrayList<>();
     	auth.getAuthorities().forEach(a -> roles.add(a.getAuthority()));
     	
     	System.out.println("Roles: " + roles);
+    	
+    	if(roles.contains("Usuario"))
+    		return servicio.getBicisDisponiblesFromEstacionPaginado(id, paginacion)
+        			.map(bici -> new BiciDTO(bici));
     	
     	return servicio.getBicisFromEstacionPaginado(id, paginacion)
     			.map(bici -> new BiciDTO(bici));

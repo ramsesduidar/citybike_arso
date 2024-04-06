@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import estaciones.dominio.Bici;
 import estaciones.dominio.Estacion;
+import estaciones.dominio.EstadoBici;
 import estaciones.dominio.Historico;
 import estaciones.dominio.Incidencia;
 import estaciones.dominio.SitioTuristico;
@@ -302,6 +303,13 @@ public class ServicioEstaciones implements IServicioEstaciones{
 	public Page<Bici> getBicisFromEstacionPaginado(String id_estacion, Pageable pageable) throws DataAccessException, EntidadNoEncontrada{
 		
 		Page<Bici> bicis = this.repositorioBici.findByIdEstacion(id_estacion, pageable);
+		
+		return bicis;
+	}
+	
+	public Page<Bici> getBicisDisponiblesFromEstacionPaginado(String id_estacion, Pageable pageable) throws DataAccessException, EntidadNoEncontrada{
+		
+		Page<Bici> bicis = this.repositorioBici.findByEstadoAndIdEstacion(EstadoBici.DISPONIBLE, id_estacion, pageable);
 		
 		return bicis;
 	}

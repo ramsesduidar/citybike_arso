@@ -10,6 +10,7 @@ import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 import estaciones.dominio.Bici;
+import estaciones.dominio.EstadoBici;
 
 
 @NoRepositoryBean
@@ -20,6 +21,8 @@ public interface RepositorioBici
 	Optional<Bici> findByIncidencias(String idIncidencia);
 
 	Page<Bici> findByIdEstacion(String idEstacion, Pageable pageable);
+	
+	Page<Bici> findByEstadoAndIdEstacion(EstadoBici estado, String idEstacion, Pageable pageable);
 	
 	List<Bici> findByIdEstacion(String idEstacion);
 

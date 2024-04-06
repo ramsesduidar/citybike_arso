@@ -1,4 +1,4 @@
-package auth2;
+package estaciones.auth2;
 
 import java.io.IOException;
 import java.util.Map;
@@ -16,7 +16,6 @@ import estaciones.servicios.IServicioAuth;
 @Component
 public class SecuritySuccessHandler implements AuthenticationSuccessHandler {
 
-	
 	@Autowired
 	private IServicioAuth servicioAuth;
 	
@@ -25,6 +24,8 @@ public class SecuritySuccessHandler implements AuthenticationSuccessHandler {
         
     	DefaultOAuth2User usuario = (DefaultOAuth2User) authentication.getPrincipal();
         Map<String, Object> claims = servicioAuth.fetchUserInfo(usuario);
+        
+        System.out.println("DefaultOAuth2User usuario: " + usuario);
         
         if (claims != null) {
             String token = JwtUtils.generateToken(claims);
