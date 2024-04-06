@@ -27,9 +27,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.httpBasic().disable()
+        		.csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/auth/**").permitAll()
-                .antMatchers("/estaciones/**", "/bicis/**").permitAll()
+                .antMatchers("/auth/**", "/v3/api-docs", "/swagger-ui.html").permitAll()
+                .antMatchers("/estaciones/**", "/bicis/**").authenticated()
                 .and()
                 .oauth2Login().successHandler(this.successHandler)
                 .and()

@@ -2,15 +2,22 @@ package estaciones.dto;
 
 import estaciones.dominio.Bici;
 import estaciones.dominio.EstadoBici;
+import io.swagger.v3.oas.annotations.media.Schema;
 
+@Schema(description ="DTO de la entidad Bici")
 public class BiciDTO {
 	
+	@Schema(description ="Identificador de la Bici")
 	private String id;
 	
+	@Schema(description ="Modelo de la Bici")
 	private String modelo;
 	
+	@Schema(description ="Estado de la Bici", 
+			example = "DISPONIBLE")
 	private EstadoBici estado;
 
+	@Schema(description ="Identificador de la Estacion en la que se encuentra la Bici")
 	private String idEstacion;
 	
 	public BiciDTO (Bici bici) {

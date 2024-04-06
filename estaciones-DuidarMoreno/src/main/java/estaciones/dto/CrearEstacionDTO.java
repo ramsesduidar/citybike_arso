@@ -1,15 +1,29 @@
 package estaciones.dto;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import io.swagger.v3.oas.annotations.media.Schema;
+
+@Schema(description ="DTO para especificar los datos al crear una Estacion")
 public class CrearEstacionDTO {
 	
+	@Schema(description ="Nombre de la Estacion")
+	@NotBlank
 	private String nombre;
 	
+	@Schema(description ="Numero de puestos de la Estacion")
+	@NotNull
 	private int numPuestos; 
 	
+	@Schema(description ="Direccion de la Estacion")
 	private String direccion;
 	
+	@Schema(description ="Latitud de la Estacion para crear las coordenadas")
+	@NotNull
 	private long latitud;
 	
+	@Schema(description ="Longitud de la Estacion para crear las coordenadas")
+	@NotNull
 	private long longitud;
 
 	public CrearEstacionDTO(String nombre, int numPuestos, String direccion, long latitud, long longitud) {

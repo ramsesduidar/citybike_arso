@@ -5,22 +5,30 @@ import java.time.LocalDateTime;
 import org.springframework.data.geo.Point;
 
 import estaciones.dominio.Estacion;
+import io.swagger.v3.oas.annotations.media.Schema;
 
-
+@Schema(description ="DTO de la entidad Estacion")
 public class EstacionDTO {
 
+	@Schema(description ="Identificador de la Estacion")
 	private String id;
 	
+	@Schema(description ="Nombre de la Estacion")
 	private String nombre;
 	
+	@Schema(description ="Fecha de creación de la Estacion")
 	private LocalDateTime fechaDeAlta;
 	
+	@Schema(description ="Puestos totales de la Estacion")
 	private int numPuestos;
 	
+	@Schema(description ="Numero de puestos libres en la Estacion")
 	private int huecosLibres;
 	
+	@Schema(description ="Dirección de la Estacion")
 	private String direccion;
 	
+	@Schema(description ="Coordenadas geográficas de la Estacion")
 	private Point coordenadas;
 
 	public EstacionDTO(Estacion estacion) {

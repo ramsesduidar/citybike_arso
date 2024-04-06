@@ -9,14 +9,19 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 
+import javax.validation.Valid;
+
 import estaciones.dto.BiciDTO;
 import estaciones.dto.CrearBiciDTO;
 import estaciones.servicios.ServicioEstaciones;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import repositorios.EntidadNoEncontrada;
 import servicios.ServicioException;
 
 @RestController
 @RequestMapping("/bicis")
+@Tag(name = "Bicicletas", description ="Controlador para trabajar con Bicis")
 public class BiciController {
 
     @Autowired
@@ -26,9 +31,12 @@ public class BiciController {
     	
     }
 
-    @PostMapping()
+    @PostMapping("")
     @PreAuthorize("hasAuthority('Gestor')")
-    public ResponseEntity<Void> createBici(@RequestBody CrearBiciDTO dto) throws DataAccessException, EntidadNoEncontrada, ServicioException {
+    @Operation(
+    		summary ="Crear bicicleta",
+    		description ="Da de alta una bicicleta con los datos especificados (Solo para el rol Gestor)")
+    public ResponseEntity<Void> createBici(@Valid @RequestBody CrearBiciDTO dto) throws DataAccessException, EntidadNoEncontrada, ServicioException {
     	
     	String id = this.servicio.altaBici(dto.getModelo(), dto.getIdEstacion());
     			
@@ -40,12 +48,18 @@ public class BiciController {
     }
     
     @GetMapping("/{id}")
+    @Operation(
+    		summary ="Obtener bicicleta",
+    		description ="Obtener al informacion una bicicleta a partir de su id (No es necesario rol)")
     public BiciDTO getBici(@PathVariable String id) throws DataAccessException, EntidadNoEncontrada {
         return new BiciDTO(servicio.recuperarBici(id));
     }
 
-    @PutMapping("/{id}")
+    @PatchMapping("/{id}")
     @PreAuthorize("hasAuthority('Gestor')")
+    @Operation(
+    		summary ="Dar baja bicicleta",
+    		description ="Da de baja una bicicleta especificando el motivo (Solo para el rol Gestor)")
     public ResponseEntity<Void> bajaBici(@PathVariable String id, @RequestBody String motivo) throws DataAccessException, EntidadNoEncontrada, ServicioException {
         
     	servicio.darBajaBici(id, motivo);

@@ -6,11 +6,12 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import estaciones.servicios.ServicioEstaciones;
 import servicios.ServicioException;
 
-@ControllerAdvice
+@RestControllerAdvice
 public class TratamientoServicioException {
 	
 	@ExceptionHandler(ServicioException.class)

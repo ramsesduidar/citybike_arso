@@ -21,15 +21,20 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 import java.util.ArrayList;
 
+import javax.validation.Valid;
+
 import estaciones.dto.BiciDTO;
 import estaciones.dto.CrearEstacionDTO;
 import estaciones.dto.EstacionDTO;
 import estaciones.servicios.IServicioEstaciones;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import repositorios.EntidadNoEncontrada;
 import servicios.ServicioException;
 
 @RestController
 @RequestMapping("/estaciones")
+@Tag(name = "Estaciones", description ="Controlador para trabajar con Encuestas")
 public class EstacionController {
 
     @Autowired
@@ -46,6 +51,9 @@ public class EstacionController {
 
     @GetMapping()
     @PreAuthorize("hasAuthority('Usuario')")
+    @Operation(
+    		summary ="Obtener todas las Estaciones",
+    		description ="Operacion para obtener todas las Estaciones (Solo para el rol Usuario)")
     public PagedModel<EntityModel<EstacionDTO>> getAllEstaciones(@RequestParam int page,
     										  @RequestParam int size) throws DataAccessException{
         
@@ -60,13 +68,19 @@ public class EstacionController {
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('Usuario')")
+    @Operation(
+    		summary ="Obtener Estacione",
+    		description ="Operacion para obtener una Estacion dado su id (Solo para el rol Usuario)")
     public EstacionDTO getEstacionById(@PathVariable String id) throws DataAccessException, EntidadNoEncontrada {
         return new EstacionDTO(servicio.recuperarEstacion(id));
     }
 
     @PostMapping()
     @PreAuthorize("hasAuthority('Gestor')")
-    public ResponseEntity<Void> createEstacion(@RequestBody CrearEstacionDTO dto) throws DataAccessException {
+    @Operation(
+    		summary ="Crear Estacion",
+    		description ="Crea una Estaciones con los datos especificados (Solo para el rol Gestor)")
+    public ResponseEntity<Void> createEstacion(@Valid @RequestBody CrearEstacionDTO dto) throws DataAccessException {
     	
     	String id = this.servicio.altaEstacion(dto.getNombre(), dto.getNumPuestos(), 
     			dto.getDireccion(), dto.getLatitud(), dto.getLongitud());
@@ -80,6 +94,9 @@ public class EstacionController {
 
     @GetMapping("/{id}/bicis")
     @PreAuthorize("hasAuthority('Gestor') or hasAuthority('Usuario')")
+    @Operation(
+    		summary ="Obtener Bicis en Estacion",
+    		description ="Operacion para obtener todas las Bicis en una Estacion (Solo para el rol Usuario y Gestor)")
     public PagedModel<EntityModel<BiciDTO>> getBicisEnEstacion(@PathVariable String id,
     										@RequestParam int page,
     										@RequestParam int size) throws DataAccessException, EntidadNoEncontrada {
@@ -133,6 +150,9 @@ public class EstacionController {
 
     @PutMapping("/{id}/bicis")
     @PreAuthorize("hasAuthority('Usuario')")
+    @Operation(
+    		summary ="Estacionar Bici",
+    		description ="Estaciona una Bici en la Estacion dada por el id (Solo para el rol Usuario)")
     public ResponseEntity<Void> estacionarBici(@PathVariable String id, 
     										@RequestBody String idBici) throws DataAccessException, EntidadNoEncontrada, ServicioException {
         
