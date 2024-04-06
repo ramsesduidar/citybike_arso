@@ -29,7 +29,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         httpSecurity.httpBasic().disable()
                 .authorizeRequests()
                 .antMatchers("/auth/**").permitAll()
-                .antMatchers("/estaciones/**", "/bicis/**").authenticated()
+                .antMatchers("/estaciones/**", "/bicis/**").permitAll()
                 .and()
                 .oauth2Login().successHandler(this.successHandler)
                 .and()

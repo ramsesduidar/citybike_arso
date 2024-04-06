@@ -17,6 +17,7 @@ public class JwtUtils {
 	//@Value("${jwt.secret}")
     //private static String SECRET_KEY;
 	private static final String SECRET_KEY = "secret";
+	private static final int CADUCIDAD = 3600; //1 hora
 
     public static String generateToken(Map<String, Object> claims) {
     	
@@ -25,7 +26,7 @@ public class JwtUtils {
                 .setIssuedAt(new Date())
                 .setExpiration(Date.from(
         				Instant.now()
-        				.plusSeconds(600))) // 10 minuto de validez
+        				.plusSeconds(CADUCIDAD))) // 10 minuto de validez
                 .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
                 .compact();
     }
