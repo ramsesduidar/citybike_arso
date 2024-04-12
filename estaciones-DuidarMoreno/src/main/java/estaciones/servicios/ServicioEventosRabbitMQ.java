@@ -16,12 +16,11 @@ import estaciones.EstacionesApp;
 import estaciones.eventos.EventoBici;
 import estaciones.eventos.IEventosListener;
 import estaciones.eventos.RabbitMQConfig;
-import estaciones.repositorios.RepositorioBici;
 
 @Service
 @Transactional
 public class ServicioEventosRabbitMQ implements IServicioEventos{
-
+	
 	@Autowired
 	private RabbitTemplate rabbitTemplate;
 	
@@ -29,6 +28,27 @@ public class ServicioEventosRabbitMQ implements IServicioEventos{
     private RabbitListenerEndpointRegistry rabbitListenerEndpointRegistry;
 	
 	private IEventosListener listener;
+	
+	@RabbitListener(queues = RabbitMQConfig.QUEUE_NAME, autoStartup = "true", id="estaciones" )
+	public void handleEvent(Message mensaje, EventoBici evento) throws Exception {
+		System.out.println("Mensaje recibido: " + mensaje);
+		
+		if(listener == null) throw new Exception("No hay listener");
+		
+		String body = new String(mensaje.getBody());
+		String routingKey = mensaje.getMessageProperties().getReceivedRoutingKey();
+		
+		System.out.println("Evento:" + body + " routingkey: " + routingKey);
+		System.out.println("Evento-idBici: " + evento.getIdBici());
+		
+		if (routingKey.endsWith("bicicleta-alquilada"))
+			listener.biciAlquilada(evento);
+			
+		
+		if (routingKey.endsWith("bicicleta-alquiler-concluido"))
+			listener.alquilerFin(evento);
+		
+	}
 	
 	@Override
 	public void publicarEventoBiciDesactivada(String idBici, LocalDateTime fecha) {
@@ -48,28 +68,14 @@ public class ServicioEventosRabbitMQ implements IServicioEventos{
 		// Obtener el identificador del oyente
         String listenerId = "estaciones";
 
+        System.out.println("hola");
+        
         // Iniciar el oyente manualmente
-        rabbitListenerEndpointRegistry.getListenerContainers().forEach( System.out::println );
+        //rabbitListenerEndpointRegistry.getListenerContainer("estaciones").start();
+        // devuelve null, no se porque.
     }
 	
-	@RabbitListener(queues = RabbitMQConfig.QUEUE_NAME, autoStartup = "false", id="estaciones")
-	public void handleEvent(Message mensaje, EventoBici evento) throws Exception {
-		System.out.println("Mensaje recibido: " + mensaje);
-		
-		String body = new String(mensaje.getBody());
-		String routingKey = mensaje.getMessageProperties().getReceivedRoutingKey();
-		
-		System.out.println("Evento:" + body + " routingkey: " + routingKey);
-		System.out.println("Evento-idBici: " + evento.getIdBici());
-		
-		if (routingKey.endsWith("bicicleta-alquilada"))
-			listener.biciAlquilada(evento);
-			
-		
-		if (routingKey.endsWith("bicicleta-alquiler-concluido"))
-			listener.alquilerFin(evento);
-		
-	}
+	
 	
 	public static void main(String[] args) throws Exception {
 		ConfigurableApplicationContext contexto =

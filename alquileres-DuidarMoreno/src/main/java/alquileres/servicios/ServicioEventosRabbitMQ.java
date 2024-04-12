@@ -121,7 +121,7 @@ public class ServicioEventosRabbitMQ implements IServicioEventos{
 	
 	public static void main(String[] args) throws Exception {
 		ServicioEventosRabbitMQ service = new ServicioEventosRabbitMQ();
-		service.publicarEventoBiciAlquilada("bici23", LocalDateTime.now());
+		service.publicarEventoBiciAlquilada("65f9f7299f56956a7f851071", LocalDateTime.now());
 		service.subscribirseEventoBiciDesactivada((evento) -> {
 			System.out.println("Listener: "+evento.getIdBici() + evento.getFecha());
 		});
