@@ -4,14 +4,18 @@ import java.io.IOException;
 
 import okhttp3.Call;
 import retrofit.github.EstacionesRestClient;
+import retrofit.github.RetrofitUtils;
 import retrofit2.Response;
 
 public class ServicioEstaciones implements IServicioEstaciones{
 	
 	private EstacionesRestClient estacionesRestClient;
-
+/*
 	public ServicioEstaciones(EstacionesRestClient estacionesRestClient) {
         this.estacionesRestClient = estacionesRestClient;
+    }*/
+	public ServicioEstaciones() {
+        this.estacionesRestClient = RetrofitUtils.getEstacionesRestClient();
     }
 	@Override
 	public boolean hayEspacioLibre(String idEstacion) {
