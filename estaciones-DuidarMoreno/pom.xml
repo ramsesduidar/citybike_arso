@@ -94,32 +94,6 @@
 
 		<!-- END: JSON-B y JSON-P -->
 		
-		<!-- Retrofit -->
-		
-		<dependency>
-			<groupId>com.squareup.retrofit2</groupId>
-			<artifactId>retrofit</artifactId>
-			<version>2.9.0</version>
-		</dependency>
-		<dependency>
-			<groupId>com.squareup.retrofit2</groupId>
-			<artifactId>converter-jackson</artifactId>
-			<version>2.9.0</version>
-		</dependency>
-		
-		<dependency>
-			<groupId>com.squareup.retrofit2</groupId>
-			<artifactId>converter-jaxb</artifactId>
-			<version>2.9.0</version>
-		</dependency>
-		<dependency>
-    		<groupId>com.squareup.retrofit2</groupId>
-    		<artifactId>converter-gson</artifactId>
-    		<version>2.9.0</version> <!-- Reemplaza '2.x.x' con la versión de Retrofit que estás utilizando -->
-		</dependency>
-
-		<!-- END: Retrofit -->
-		
 	</dependencies>
 
 	<build>
