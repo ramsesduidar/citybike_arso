@@ -2,7 +2,7 @@ package alquileres.servicios;
 
 import java.io.IOException;
 
-import okhttp3.Call;
+import retrofit2.Call;
 import retrofit.github.EstacionesRestClient;
 import retrofit.github.RetrofitUtils;
 import retrofit2.Response;

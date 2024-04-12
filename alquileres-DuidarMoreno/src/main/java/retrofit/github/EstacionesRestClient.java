@@ -14,5 +14,7 @@ public interface EstacionesRestClient {
     Call<EstacionDTO> recuperarEstacion(@Path("idEstacion") String idEstacion);
 
     @POST("estaciones/{idEstacion}/bicis")
-    Call<Void> estacionarBici(@Path("idEstacion") String idEstacion, @Body BiciDTO bicicleta);
+    Call<Void> estacionarBici(@Path("idEstacion") String idEstacion, @Body String idBici);
+
+	Call<Boolean> hayEspacioLibre(String idEstacion);
 }
