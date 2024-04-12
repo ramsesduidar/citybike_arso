@@ -22,6 +22,8 @@ import estaciones.dominio.Incidencia;
 import estaciones.dominio.SitioTuristico;
 import estaciones.dto.BiciDTO;
 import estaciones.dto.IncidenciaDTO;
+import estaciones.eventos.EventoBici;
+import estaciones.eventos.IEventosListener;
 import estaciones.repositorios.RepositorioBici;
 import estaciones.repositorios.RepositorioEstacion;
 import estaciones.repositorios.RepositorioHistorico;
@@ -33,7 +35,7 @@ import servicios.ServicioException;
 
 @Service
 @Transactional
-public class ServicioEstaciones implements IServicioEstaciones{
+public class ServicioEstaciones implements IServicioEstaciones, IEventosListener{
 
 	private RepositorioEstacion repositorioEstacion;
 	
@@ -43,17 +45,22 @@ public class ServicioEstaciones implements IServicioEstaciones{
 	
 	private IServicioSitiosTuristicos sitiosService;
 	
+	private IServicioEventos eventosService;
+	
 	
 	@Autowired
 	public ServicioEstaciones(RepositorioEstacion repositorioEstacion,
 							RepositorioHistorico repositorioHistorico,
 							RepositorioBici repositorioBici,
-							IServicioSitiosTuristicos sitiosService) {
+							IServicioSitiosTuristicos sitiosService,
+							IServicioEventos eventosService) {
 		
 		this.repositorioBici = repositorioBici;
 		this.repositorioEstacion = repositorioEstacion;
 		this.repositorioHistorico = repositorioHistorico;
 		this.sitiosService = sitiosService;
+		this.eventosService = eventosService;
+		this.eventosService.iniciarOyente(this);
 	}
 	
 	@Override
@@ -238,6 +245,7 @@ public class ServicioEstaciones implements IServicioEstaciones{
 		bici.darDeBaja(motivo);
 		repositorioBici.save(bici);
 		
+		this.eventosService.publicarEventoBiciDesactivada(id, LocalDateTime.now());
 		
 	}
 
@@ -312,6 +320,23 @@ public class ServicioEstaciones implements IServicioEstaciones{
 		Page<Bici> bicis = this.repositorioBici.findByEstadoAndIdEstacion(EstadoBici.DISPONIBLE, id_estacion, pageable);
 		
 		return bicis;
+	}
+
+	@Override
+	public void biciAlquilada(EventoBici evento) throws Exception {
+		Bici bici = this.recuperarBici(evento.getIdBici());
+		bici.setEstado(EstadoBici.NO_DISPONIBLE);
+		
+		this.repositorioBici.save(bici);
+		
+	}
+
+	@Override
+	public void alquilerFin(EventoBici evento) throws Exception {
+		Bici bici = this.recuperarBici(evento.getIdBici());
+		bici.setEstado(EstadoBici.DISPONIBLE);
+		
+		this.repositorioBici.save(bici);
 	}
 	
 	

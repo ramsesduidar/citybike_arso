@@ -1,5 +1,6 @@
 package alquileres.repositorios;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,7 +21,7 @@ import repositorios.Repositorio;
 import repositorios.RepositorioException;
 import utils.EntityManagerHelper;
 
-public class RepositorioUsuariosSQL implements Repositorio<Usuario, String>{
+public class RepositorioUsuariosSQL implements RepositorioUsuarios{
 
 	public Class<UsuarioEntidad> getClase() {
 		return UsuarioEntidad.class;
@@ -66,6 +67,8 @@ public class RepositorioUsuariosSQL implements Repositorio<Usuario, String>{
 			if (instance == null) {
 				throw new EntidadNoEncontrada(entity.getId() + " no existe en el repositorio");
 			}
+			System.out.println("entidad en base de datos: " + instance);
+			
 			em.merge(usuarioEntidad);
 			em.getTransaction().commit();
 		} catch (Exception e) {
@@ -152,6 +155,34 @@ public class RepositorioUsuariosSQL implements Repositorio<Usuario, String>{
 		} catch (RuntimeException re) {
 
 			throw new RepositorioException("Error buscando todos los ids de "+getNombre(),re);
+
+		}
+	}
+	
+	@Override
+	public Usuario getUsuarioByReservaActiva(String idBici, LocalDateTime fecha) throws RepositorioException, EntidadNoEncontrada {
+		EntityManager em = EntityManagerHelper.getEntityManager();
+		try {
+			final String queryString = "SELECT u "
+					+ "FROM UsuarioEntidad u JOIN u.reservas r "
+					+ "WHERE r.idBici = :idBici AND r.caducidad > :fecha";
+			
+
+			Query query = em.createQuery(queryString);
+
+			query.setParameter("idBici", idBici);
+			query.setParameter("fecha", fecha);
+			query.setHint(QueryHints.REFRESH, HintValues.TRUE);
+
+			UsuarioEntidad entidad = (UsuarioEntidad) query.getSingleResult();
+			if(entidad == null)
+				throw new EntidadNoEncontrada("No existen usuarios que contengan una reserva activa para la bici "+ idBici);
+			
+			return this.convertirAUsuario(entidad);
+
+		} catch (RuntimeException re) {
+
+			throw new RepositorioException("Error buscando el usuario con reservas para la bici-id:  "+idBici,re);
 
 		}
 	}

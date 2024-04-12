@@ -9,12 +9,18 @@ import javax.ws.rs.PathParam;
 import java.net.URI;
 
 import javax.annotation.security.RolesAllowed;
+import javax.inject.Inject;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
+
+import org.glassfish.hk2.api.Immediate;
+import org.glassfish.hk2.api.ServiceLocator;
+import org.glassfish.hk2.utilities.ServiceLocatorUtilities;
+import org.glassfish.jersey.server.ResourceConfig;
 
 import alquileres.dominio.Usuario;
 import alquileres.servicios.IServicioAlquileres;
@@ -25,6 +31,7 @@ import servicios.FactoriaServicios;
 @Path("usuarios")
 public class AlquileresControladorRest {
 
+    
 	private IServicioAlquileres servicio = FactoriaServicios.getServicio(IServicioAlquileres.class);
 	
 	@Context

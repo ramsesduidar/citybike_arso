@@ -24,10 +24,10 @@ public class UsuarioEntidad implements Serializable{
     @GeneratedValue(strategy=GenerationType.AUTO)
 	private String idUsuario;
 	
-	@OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<ReservaEntidad> reservas;
 	
-	@OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<AlquilerEntidad> alquileres;
 	
 	

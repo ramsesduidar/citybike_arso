@@ -2,19 +2,35 @@ package alquileres.servicios;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonParser;
+
 import alquileres.dominio.Reserva;
 import alquileres.dominio.Usuario;
+import alquileres.repositorios.RepositorioUsuarios;
 import dto.UsuarioDTO;
+import eventos.EventoBici;
+import eventos.IEventosListener;
 import repositorios.EntidadNoEncontrada;
 import repositorios.FactoriaRepositorios;
 import repositorios.Repositorio;
 import repositorios.RepositorioException;
 import servicios.FactoriaServicios;
 
-public class ServicioAlquileres implements IServicioAlquileres{
+public class ServicioAlquileres implements IServicioAlquileres, IEventosListener{
 	
-	private Repositorio<Usuario, String> repo = FactoriaRepositorios.getRepositorio(Usuario.class);
+	private RepositorioUsuarios repo = FactoriaRepositorios.getRepositorio(Usuario.class);
 	private IServicioEstaciones service = FactoriaServicios.getServicio(IServicioEstaciones.class);
+	private IServicioEventos eventosService = FactoriaServicios.getServicio(IServicioEventos.class);
+	
+	public ServicioAlquileres() {
+		try {
+			eventosService.subscribirseEventoBiciDesactivada(this);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	
 	/*
 	 * reservar(idUsuario, idBicicleta). Esta operación está a cargo de crear una reserva 
@@ -69,11 +85,19 @@ public class ServicioAlquileres implements IServicioAlquileres{
 			throw new IllegalArgumentException("El usuario con id: " + idUsuario
 					+ "no tiene ninguna reserva activa");
 		
-		user.addAlquiler(activa.getIdBicicleta(), LocalDateTime.now());
+		LocalDateTime fecha = LocalDateTime.now();
+		user.addAlquiler(activa.getIdBicicleta(), fecha);
 		
 		user.deleteReservaActiva();
 		
 		repo.update(user);
+		
+		try {
+			this.eventosService.publicarEventoBiciAlquilada(activa.getIdBicicleta(), fecha);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 	}
 
@@ -108,9 +132,17 @@ public class ServicioAlquileres implements IServicioAlquileres{
 			throw new IllegalArgumentException("El usuario con id: " + idUsuario
 					+ "ha superado el tiempo máximo de uso");
 		
-		user.addAlquiler(idBici, LocalDateTime.now());
+		LocalDateTime fecha = LocalDateTime.now();
+		user.addAlquiler(idBici, fecha);
 		
 		repo.update(user);
+		
+		try {
+			this.eventosService.publicarEventoBiciAlquilada(idBici, fecha);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	/*
@@ -155,6 +187,12 @@ public class ServicioAlquileres implements IServicioAlquileres{
 		System.out.println("llamo a repo despues de dejar bici");
 		repo.update(user);
 		
+		try {
+			this.eventosService.publicarEventoBiciAlquilerFin(idBici, LocalDateTime.now());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 	}
 
@@ -187,6 +225,19 @@ public class ServicioAlquileres implements IServicioAlquileres{
 		}
 		
 		return user;
+	}
+
+	@Override
+	public void biciDesactivada(EventoBici evento) throws Exception {
+		
+		//this.reservar("33", evento.getIdBici()); //para pruebas
+		System.out.println("Alquileres listener activado");
+		Usuario user = this.repo.getUsuarioByReservaActiva(evento.getIdBici(), evento.getFecha());
+		if (user != null) {
+			user.deleteReservaActiva();
+			repo.update(user);
+		}
+		
 	}
 
 }
