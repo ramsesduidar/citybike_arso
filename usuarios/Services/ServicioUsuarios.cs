@@ -1,13 +1,14 @@
 using Repositorios;
 using Usuarios.Modelo;
+using Usuarios.Repositorios;
 
 namespace Usuarios.Servicios;
 
 public class ServicioUsuarios : IServicioUsuarios
 {
-    private IRepositorio<Usuario, string> repositorio;
+    private RepositorioUsuariosMongoDB repositorio;
 
-    public ServicioUsuarios(IRepositorio<Usuario, string> repositorio)
+    public ServicioUsuarios(RepositorioUsuariosMongoDB repositorio)
     {
         this.repositorio = repositorio;
     }
@@ -20,7 +21,40 @@ el gestor activa un código para que se proceda con el alta.
 */
     public string SolicitudCodigoActivacion(string identificador)
     {
-        return "hola";
+        
+        Usuario usuario = this.repositorio.GetById(identificador);
+        
+        // Generamos el código de activación
+        CodigoActivacion codigo = new CodigoActivacion(Guid.NewGuid());
+        
+        if (usuario == null)
+        {
+            // Creamos el nuevo usuario si no esta creado y le asignamos el código.
+            usuario = new Usuario(identificador, codigo);
+
+            // Guardmaos el usuario
+            this.repositorio.Add(usuario);
+            
+            // Devolvemos el código
+            return codigo.Valor.ToString();
+        }
+
+        if (usuario.Estado == EstadoUsuario.EN_SOLICITUD)
+        {
+            // Asignamos el nuevo código
+            usuario.CodigoActivacion = codigo;
+
+            // Actualizamos el usuario
+            this.repositorio.Update(usuario);
+
+            // Devolvemos el código
+            return codigo.Valor.ToString();
+        }
+        else{
+            throw new ArgumentException("El usuario ya está dado de alta");
+        }
+        
+        
     }
 
 /*
@@ -34,16 +68,61 @@ con el identificador de usuario OAuth2 de GitHub. Los gestores tendrán autentic
 El resto de información proporcionada en el proceso de alta se deja a criterio 
 de cada grupo (nombre completo, correo electrónico, teléfono, dirección postal, etc.).
 */
-    public bool AltaUsuario(string codigoActivacion, string usuario, 
+    public void AltaUsuario(string codigoActivacion, string id, string usuario, 
                     string contraseña, string nombre, string apellidos, string direccion)
     {
-        return true;
+        
+        Usuario usuario1 = this.repositorio.GetById(id);
+        if (usuario1 == null) 
+        {
+            throw new ArgumentException("No existe una clave de activación asociada al id: " + id);
+        }
+
+        if(!usuario1.CodigoActivacion.Valor.ToString().Equals(codigoActivacion))
+        {
+            throw new ArgumentException("El identificador: " + id + " ,no está asociado a la clave: " + codigoActivacion);
+        }
+
+        if(usuario1.Estado != EstadoUsuario.EN_SOLICITUD)
+        {
+            throw new ArgumentException("El usuario con " + id + " , ya está dado de alta");
+        }
+        usuario1.Estado = EstadoUsuario.DE_ALTA;
+        usuario1.Username = usuario;
+        usuario1.Contrasena = contraseña;
+        usuario1.Nombre = nombre;
+        usuario1.Apellidos = apellidos;
+        usuario1.Direccion = direccion;
+
+        this.repositorio.Update(usuario1);
     }
 
-    public bool AltaUsuarioOAuth2(string codigoActivacion, string usuario, 
+    public void AltaUsuarioOAuth2(string codigoActivacion, string id, string usuario, 
                     string oauth2, string nombre, string apellidos, string direccion)
     {
-        return true;
+        Usuario usuario1 = this.repositorio.GetById(id);
+        if (usuario1 == null) 
+        {
+            throw new ArgumentException("No existe una clave de activación asociada al id: " + id);
+        }
+
+        if(!usuario1.CodigoActivacion.Valor.ToString().Equals(codigoActivacion))
+        {
+            throw new ArgumentException("El identificador: " + id + " ,no está asociado a la clave: " + codigoActivacion);
+        }
+        
+        if(usuario1.Estado != EstadoUsuario.EN_SOLICITUD)
+        {
+            throw new ArgumentException("El usuario con " + id + " , ya está dado de alta");
+        }
+        usuario1.Estado = EstadoUsuario.DE_ALTA;
+        usuario1.Username = usuario;
+        usuario1.OAuth2 = oauth2;
+        usuario1.Nombre = nombre;
+        usuario1.Apellidos = apellidos;
+        usuario1.Direccion = direccion;
+
+        this.repositorio.Update(usuario1);
     }
 
 /*
@@ -51,7 +130,15 @@ de cada grupo (nombre completo, correo electrónico, teléfono, dirección posta
 */
     public void BajaUsuario(string idUsuario)
     {
+        Usuario usuario1 = this.repositorio.GetById(idUsuario);
+        if (usuario1 == null) 
+        {
+            throw new EntidadNoEncontradaException("No existe el usuario con id: " + idUsuario);
+        }
 
+        usuario1.Estado = EstadoUsuario.DE_BAJA;
+
+        this.repositorio.Update(usuario1);
     }
 
 /*
@@ -60,7 +147,21 @@ comprueba que exista el usuario y que coincida la contraseña.
 */
     public Dictionary<string, string> VerificarUsuarioContrasena(string usuario, string contrasena)
     {
-        return new Dictionary<string, string>();
+        
+        Usuario usuario1 = this.repositorio.GetByUsuarioContraseña(usuario, contrasena);
+        if (usuario1 == null) 
+        {
+            throw new ArgumentException("Usuario o contraseña erroneos");
+        }
+        
+        Dictionary<string, string> claims = new Dictionary<string, string>
+        {
+            { "Id", usuario1.Id },
+            { "Nombre", usuario1.Nombre + " " + usuario1.Apellidos },
+            { "Roles", usuario1.Rol.ToString() }
+        };
+
+        return claims;
     }
 
 /*
@@ -72,7 +173,20 @@ es decir, de un usuario registrado con autenticación OAuth2.
 */
     public Dictionary<string, string> VerificarUsuarioOAuth2(string oauth2)
     {
-        return new Dictionary<string, string>();
+        Usuario usuario1 = this.repositorio.GetByOAuth2(oauth2);
+        if (usuario1 == null) 
+        {
+            throw new ArgumentException("No hay usuarios asociados al oauth2: " + oauth2);
+        }
+        
+        Dictionary<string, string> claims = new Dictionary<string, string>
+        {
+            { "Id", usuario1.Id },
+            { "Nombre", usuario1.Nombre + " " + usuario1.Apellidos },
+            { "Roles", usuario1.Rol.ToString() }
+        };
+
+        return claims;
     }
 
 /*
@@ -81,6 +195,11 @@ es decir, de un usuario registrado con autenticación OAuth2.
 
     public List<Usuario> GetUsuarios()
     {
-        return new List<Usuario>();
+        return this.repositorio.GetAll();
+    }
+
+    public Usuario GetUsuario(string id)
+    {
+        return this.repositorio.GetById(id);
     }
 }

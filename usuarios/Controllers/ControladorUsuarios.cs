@@ -18,39 +18,54 @@ public class UsuarioController : ControllerBase
         this.servicio = servicio;
     }
 
-    [HttpPut("{id}")]
+    [HttpPost()]
     public ActionResult<string> SolicitudCodigoActivacion(string id)
     {
-        return "hola";
+        return this.servicio.SolicitudCodigoActivacion(id);
     }
 
-    [HttpPost()]
+    [HttpPost("{id}")]
     public IActionResult AltaUsuario(AltaDTO alta)
     {
+        if(alta.Contraseña != null && alta.Oauth2 != null)
+            return BadRequest("Contraseña y OAuth2 no pueden estar asignados a la vez"); 
+        
+        if(alta.Contraseña != null)
+        {
+            this.servicio.AltaUsuario(alta.CodigoActivacion, alta.Id, alta.Usuario,
+                                    alta.Contraseña, alta.Nombre, alta.Apellidos, alta.Direccion);
+        }
+        if(alta.Oauth2 != null)
+        {
+            this.servicio.AltaUsuarioOAuth2(alta.CodigoActivacion, alta.Id, alta.Usuario,
+                                    alta.Oauth2, alta.Nombre, alta.Apellidos, alta.Direccion);
+        }
         return NoContent();
     }
 
     [HttpDelete("{id}")]
     public IActionResult BajaUsuario(string id)
     {
+        this.servicio.BajaUsuario(id);
+
         return NoContent();
     }
 
-    [HttpGet("{id}")]
-    public ActionResult<Dictionary<string, string>> VerificarUsuarioContrasena(string usuario, string contrasena)
+    [HttpPost("{usuario}/contrasena")]
+    public ActionResult<Dictionary<string, string>> VerificarUsuarioContrasena(string usuario, [FromBody]string contrasena)
     {
-        return NoContent();
+        return this.servicio.VerificarUsuarioContrasena(usuario, contrasena);
     }
     
-    [HttpGet("{id}")]
+    [HttpGet("{oauth2}/oauth2")]
     public ActionResult<Dictionary<string, string>> VerificarUsuarioOAuth2(string oauth2)
     {
-            return NoContent();
+        return this.servicio.VerificarUsuarioOAuth2(oauth2);
     }
 
     [HttpGet]
     public ActionResult<List<Usuario>> GetUsuarios()
     {
-        return NoContent();
+        return this.servicio.GetUsuarios();
     }
 }

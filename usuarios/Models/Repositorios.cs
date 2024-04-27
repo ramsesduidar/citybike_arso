@@ -9,3 +9,16 @@ public interface IRepositorio<T, K>
     List<T> GetAll();
     List<K> GetIds();
 }
+
+public class EntidadNoEncontradaException : Exception{
+
+    // Constructor que acepta un mensaje de error opcional
+    public EntidadNoEncontradaException(string message) : base(message)
+    {
+    }
+
+    // Constructor que acepta un mensaje de error y una excepción interna opcional
+    public EntidadNoEncontradaException(string message, Exception innerException) : base(message, innerException)
+    {
+    }
+}
