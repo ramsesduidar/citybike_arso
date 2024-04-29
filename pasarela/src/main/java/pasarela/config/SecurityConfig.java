@@ -12,7 +12,7 @@ import pasarela.security.JwtUtils;
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-	Autowired
+	@Autowired
     private JwtUtils jwtUtils;
 	
     @Override
@@ -23,7 +23,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .antMatchers("/usuarios/**").authenticated() // Proteger las rutas del microservicio de usuarios
             .anyRequest().authenticated() // Requerir autenticación para todas las demás rutas
         	.and()
-        	.addFilterBefore(new AuthorizationFilter(), UsernamePasswordAuthenticationFilter.class); // Agregar esta línea
+        	.addFilterBefore(new AuthorizationFilter(jwtUtils), UsernamePasswordAuthenticationFilter.class); // Agregar esta línea
         
     }
 }
