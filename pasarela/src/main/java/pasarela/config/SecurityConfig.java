@@ -21,7 +21,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .authorizeRequests()
             .antMatchers("/auth/**").permitAll() // Permitir acceso a las rutas de autenticación
             .antMatchers("/usuarios/**").authenticated() // Proteger las rutas del microservicio de usuarios
-            .anyRequest().authenticated() // Requerir autenticación para todas las demás rutas
+            .anyRequest().permitAll() // Requerir autenticación para todas las demás rutas
         	.and()
         	.addFilterBefore(new AuthorizationFilter(jwtUtils), UsernamePasswordAuthenticationFilter.class); // Agregar esta línea
         
