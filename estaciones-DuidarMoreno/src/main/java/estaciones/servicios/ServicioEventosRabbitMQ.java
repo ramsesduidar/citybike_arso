@@ -42,11 +42,20 @@ public class ServicioEventosRabbitMQ implements IServicioEventos{
 		System.out.println("Evento-idBici: " + evento.getIdBici());
 		
 		if (routingKey.endsWith("bicicleta-alquilada"))
-			listener.biciAlquilada(evento);
+			try {
+				listener.biciAlquilada(evento);
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+			
 			
 		
 		if (routingKey.endsWith("bicicleta-alquiler-concluido"))
-			listener.alquilerFin(evento);
+			try {
+				listener.alquilerFin(evento);
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
 		
 	}
 	
