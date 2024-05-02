@@ -67,7 +67,7 @@ public class EstacionController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAuthority('Usuario')")
+    //@PreAuthorize("hasAuthority('Usuario')")
     @Operation(
     		summary ="Obtener Estacione",
     		description ="Operacion para obtener una Estacion dado su id (Solo para el rol Usuario)")
@@ -149,7 +149,7 @@ public class EstacionController {
     }
 
     @PutMapping("/{id}/bicis")
-    @PreAuthorize("hasAuthority('Usuario')")
+    //@PreAuthorize("hasAuthority('Usuario')")
     @Operation(
     		summary ="Estacionar Bici",
     		description ="Estaciona una Bici en la Estacion dada por el id (Solo para el rol Usuario)")
