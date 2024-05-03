@@ -29,7 +29,7 @@ public class Usuario
     public string? Apellidos {get; set;}
     public string? Direccion {get; set;}
 
-    public CodigoActivacion CodigoActivacion {get; set;}
+    public CodigoActivacion? CodigoActivacion {get; set;}
 
     public Usuario(string id, CodigoActivacion codigo)
     {

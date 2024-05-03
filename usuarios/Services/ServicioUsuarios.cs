@@ -115,6 +115,7 @@ de cada grupo (nombre completo, correo electrónico, teléfono, dirección posta
         {
             throw new ArgumentException("El usuario con " + id + " , ya está dado de alta");
         }
+
         usuario1.Estado = EstadoUsuario.DE_ALTA;
         usuario1.Username = usuario;
         usuario1.OAuth2 = oauth2;
@@ -157,6 +158,7 @@ comprueba que exista el usuario y que coincida la contraseña.
         Dictionary<string, string> claims = new Dictionary<string, string>
         {
             { "Id", usuario1.Id },
+            { "sub", usuario1.Username},
             { "Nombre", usuario1.Nombre + " " + usuario1.Apellidos },
             { "Roles", usuario1.Rol.ToString() }
         };
@@ -182,6 +184,7 @@ es decir, de un usuario registrado con autenticación OAuth2.
         Dictionary<string, string> claims = new Dictionary<string, string>
         {
             { "Id", usuario1.Id },
+            { "sub", usuario1.Username},
             { "Nombre", usuario1.Nombre + " " + usuario1.Apellidos },
             { "Roles", usuario1.Rol.ToString() }
         };
