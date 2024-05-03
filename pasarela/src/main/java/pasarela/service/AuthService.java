@@ -3,8 +3,8 @@ package pasarela.service;
 import java.io.IOException;
 import java.util.Map;
 
-import org.jvnet.hk2.annotations.Service;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
 import retrofit2.Call;
 import retrofit2.Retrofit;
@@ -15,9 +15,9 @@ public class AuthService {
 
     private final UsuariosService usuariosService;
 
-    public AuthService(@Value("${zuul.routes.usuarios.url}") String usuariosUrl) {
+    public AuthService() {
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(usuariosUrl)
+                .baseUrl("http://localhost:5200/api/usuarios/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 

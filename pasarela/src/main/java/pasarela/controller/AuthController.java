@@ -30,6 +30,9 @@ public class AuthController {
         
         Map<String, Object> claims = authService.getClaimsFromUsernamePassword(authRequest.getUsername(), authRequest.getPassword());
 
+        if (claims== null) {
+        	return ResponseEntity.badRequest().body("Usuario o contraseña no son válidos");
+        }
        
         String token = jwtUtils.generateToken(claims);
 
@@ -41,7 +44,10 @@ public class AuthController {
     public ResponseEntity<?> authenticateOAuth2(@RequestBody OAuth2Request oauth2Request) {
         
         Map<String, Object> claims = authService.getClaimsFromOAuth2Id(oauth2Request.getOauth2Id());
-
+        
+        if (claims== null) {
+        	return ResponseEntity.badRequest().body("Usuario oauth2 no es válido");
+        }
         String token = jwtUtils.generateToken(claims);
 
         return ResponseEntity.ok(new AuthResponse(token, claims));
