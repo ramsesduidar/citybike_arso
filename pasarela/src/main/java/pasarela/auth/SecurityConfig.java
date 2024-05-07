@@ -1,4 +1,4 @@
-package pasarela.config;
+package pasarela.auth;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -9,9 +9,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
-import pasarela.security.JwtRequestFilter;
-import pasarela.security.JwtUtils;
 
 @Configuration
 @EnableWebSecurity

@@ -1,4 +1,4 @@
-package pasarela.security;
+package pasarela.auth;
 
 import java.time.Instant;
 import java.util.Date;

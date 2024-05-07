@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import pasarela.security.JwtUtils;
 import pasarela.service.AuthService;
+import pasarela.auth.JwtUtils;
 import pasarela.controller.AuthRequest;
 import pasarela.controller.AuthResponse;
 import pasarela.controller.OAuth2Request;
