@@ -33,8 +33,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/estaciones/*", "/estaciones/*/bicis").permitAll()
                 .antMatchers("/estaciones/**", "/bicis/**").authenticated()
                 .and()
-                .oauth2Login().successHandler(this.successHandler)
-                .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
