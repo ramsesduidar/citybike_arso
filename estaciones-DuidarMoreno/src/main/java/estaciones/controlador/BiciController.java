@@ -63,7 +63,7 @@ public class BiciController {
     public ResponseEntity<Void> bajaBici(@PathVariable String id, @RequestBody String motivo) throws DataAccessException, EntidadNoEncontrada, ServicioException {
         
     	servicio.darBajaBici(id, motivo);
-    	return ResponseEntity.ok().build();
+    	return ResponseEntity.noContent().build();
     }
 
 }

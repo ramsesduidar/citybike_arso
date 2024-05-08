@@ -64,6 +64,7 @@ public class EstacionController {
         		.map( e -> new EstacionDTO(e));
     	
     	return  this.pagedRA_Estacion.toModel(estaciones);
+    	
     }
 
     @GetMapping("/{id}")
@@ -158,7 +159,7 @@ public class EstacionController {
         
     	servicio.estacionarBici(idBici, id);
     	
-    	return ResponseEntity.ok().build();
+    	return ResponseEntity.noContent().build();
     	
     }
 }

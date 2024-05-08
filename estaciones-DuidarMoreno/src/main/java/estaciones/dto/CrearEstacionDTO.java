@@ -2,6 +2,8 @@ package estaciones.dto;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
+
 import io.swagger.v3.oas.annotations.media.Schema;
 
 @Schema(description ="DTO para especificar los datos al crear una Estacion")
@@ -13,6 +15,7 @@ public class CrearEstacionDTO {
 	
 	@Schema(description ="Numero de puestos de la Estacion")
 	@NotNull
+	@Positive
 	private int numPuestos; 
 	
 	@Schema(description ="Direccion de la Estacion")
