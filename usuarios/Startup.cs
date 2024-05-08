@@ -41,6 +41,7 @@ namespace Usuarios
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "UsuariosAPI", Version = "v1" });
             });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -63,6 +64,8 @@ namespace Usuarios
             {
                 endpoints.MapControllers();
             });
+
+            app.ApplicationServices.GetRequiredService<IServicioUsuarios>();//iniciamos el servicio para crear el gestor
         }
     }
 }

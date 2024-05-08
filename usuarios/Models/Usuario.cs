@@ -38,4 +38,11 @@ public class Usuario
         this.Estado = EstadoUsuario.EN_SOLICITUD;
         this.Rol = RolUsuario.Usuario;
     }
+
+    public Usuario()
+    {
+        
+    }
+
+    
 }

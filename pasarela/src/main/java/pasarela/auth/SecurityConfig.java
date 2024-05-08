@@ -26,10 +26,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
             .authorizeRequests()
-            .antMatchers("/auth/**").permitAll() // Permitir acceso a las rutas de autenticación
             .antMatchers(HttpMethod.GET, "/usuarios").hasAuthority("Gestor")
             .antMatchers(HttpMethod.POST, "/usuarios").hasAuthority("Gestor")
             .antMatchers(HttpMethod.DELETE, "/usuarios/*").hasAuthority("Gestor")// Proteger las rutas del microservicio de usuarios
+            .antMatchers("/auth/oauth2").authenticated()
             .anyRequest().permitAll() // Requerir autenticación para todas las demás rutas
         	.and()
         	.oauth2Login().successHandler(this.successHandler)

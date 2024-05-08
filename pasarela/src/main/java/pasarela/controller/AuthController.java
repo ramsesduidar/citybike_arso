@@ -4,6 +4,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,7 +31,7 @@ public class AuthController {
         
         Map<String, Object> claims = authService.getClaimsFromUsernamePassword(authRequest.getUsername(), authRequest.getPassword());
 
-        if (claims== null) {
+        if (claims == null) {
         	return ResponseEntity.badRequest().body("Usuario o contraseña no son válidos");
         }
        
@@ -40,17 +41,17 @@ public class AuthController {
         return ResponseEntity.ok(new AuthResponse(token, claims));
     }
 
-    @PostMapping("/oauth2")
-    public ResponseEntity<?> authenticateOAuth2(@RequestBody OAuth2Request oauth2Request) {
+    @GetMapping("/oauth2")
+    public ResponseEntity<?> authenticateOAuth2() {
         
-        Map<String, Object> claims = authService.getClaimsFromOAuth2Id(oauth2Request.getOauth2Id());
+        /*Map<String, Object> claims = authService.getClaimsFromOAuth2Id(oauth2Request.getOauth2Id());
         
         if (claims== null) {
         	return ResponseEntity.badRequest().body("Usuario oauth2 no es válido");
         }
-        String token = jwtUtils.generateToken(claims);
+        String token = jwtUtils.generateToken(claims);*/
 
-        return ResponseEntity.ok(new AuthResponse(token, claims));
+        return ResponseEntity.ok().build();
     }
     
 }

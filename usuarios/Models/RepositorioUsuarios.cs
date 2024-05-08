@@ -14,6 +14,8 @@ public class RepositorioUsuariosMongoDB : IRepositorio<Usuario, string>
         string? mongoDbUri = Environment.GetEnvironmentVariable("MONGODB_URI");
         string? mongodatabase = Environment.GetEnvironmentVariable("MONGODB_DATABASE");
 
+        Console.WriteLine("Variables de entorno: " + mongoDbUri + " " + mongoDbUri);
+
         if (string.IsNullOrWhiteSpace(mongoDbUri))
         {
             mongoDbUri = "mongodb+srv://ramsesdm:1hnmV75Fz2EXd44Y@cluster0.8o0l6d2.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";

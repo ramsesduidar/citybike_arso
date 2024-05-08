@@ -57,7 +57,7 @@ public class AlquileresControladorRest {
 	public Response confirmarReserva( @PathParam("id") String id)
 			throws Exception {
 		
-		this.confirmarReserva(id);
+		this.servicio.confirmarReserva(id);
 		
 		return Response.status(Response.Status.NO_CONTENT).build();
 	}

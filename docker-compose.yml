@@ -32,7 +32,8 @@ services:
     ports:
       - "5200:5200"
     environment:
-      - MONGODB_URI=mongodb://root:example@mongo:27017/usuarios?authSource=admin
+      - MONGODB_URI=mongodb://root:example@mongo:27017
+      - MONGODB_DATABASE=usuarios
     depends_on:
       - mongo
   pasarela:

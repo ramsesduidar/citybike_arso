@@ -19,7 +19,7 @@ public class UsuarioController : ControllerBase
     }
 
     [HttpPost()]
-    public ActionResult<string> SolicitudCodigoActivacion(string id)
+    public ActionResult<string> SolicitudCodigoActivacion([FromBody]string id)
     {
         return this.servicio.SolicitudCodigoActivacion(id);
     }

@@ -1,0 +1,890 @@
+{
+	"info": {
+		"_postman_id": "60d3457e-f6ad-4d03-b2a7-11bae6418e49",
+		"name": "cityBike-DuidarMoreno",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "28377133"
+	},
+	"item": [
+		{
+			"name": "GESTOR Login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"gestor\",\r\n    \"password\": \"gestor\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8090/auth/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8090",
+					"path": [
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Es contraseña gestor",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "\"gestor\"",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8090/usuarios/gestor/contrasena",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8090",
+					"path": [
+						"usuarios",
+						"gestor",
+						"contrasena"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GESTOR crear codigo",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJJZCI6IjYzZTUyZTE5LWE2NzYtNDhiZC1hZjk5LTc4MWViMjVlNzRkNyIsInN1YiI6Imdlc3RvciIsIk5vbWJyZSI6InBhY28xIHBlcmV6IiwiUm9sZXMiOiJHZXN0b3IiLCJpYXQiOjE3MTUyMDE2NjMsImV4cCI6MTcxNTIwNTI2M30.oBNZOYHP9MB9i-tXHVt8K_yb04FPjLfnHr_yweuzGqA",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "\"54801732T\"",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8090/usuarios",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8090",
+					"path": [
+						"usuarios"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Registro contraseña",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"codigoActivacion\": \"a2c0d259-a7c7-4939-9bbc-a08a82471ded\",\r\n  \"id\": \"54801732T\",\r\n  \"usuario\": \"ramsesdm\",\r\n  \"contraseña\": \"123\",\r\n  \"nombre\": \"ramses\",\r\n  \"apellidos\": \"duidar\",\r\n  \"direccion\": \"calle 1\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8090/usuarios/54801732T",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8090",
+					"path": [
+						"usuarios",
+						"54801732T"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GESTOR crear codigo Copy",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJJZCI6IjYzZTUyZTE5LWE2NzYtNDhiZC1hZjk5LTc4MWViMjVlNzRkNyIsInN1YiI6Imdlc3RvciIsIk5vbWJyZSI6InBhY28xIHBlcmV6IiwiUm9sZXMiOiJHZXN0b3IiLCJpYXQiOjE3MTUyMDE2NjMsImV4cCI6MTcxNTIwNTI2M30.oBNZOYHP9MB9i-tXHVt8K_yb04FPjLfnHr_yweuzGqA",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "\"99801732T\"",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8090/usuarios",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8090",
+					"path": [
+						"usuarios"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Registro oauth2",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"codigoActivacion\": \"cd59e890-2b91-47c2-a4e7-66df3f7e3780\",\r\n  \"id\": \"99801732T\",\r\n  \"usuario\": \"ramsesdm\",\r\n  \"oauth2\": \"ramsesduidar\",\r\n  \"nombre\": \"ramses\",\r\n  \"apellidos\": \"duidar\",\r\n  \"direccion\": \"calle 1\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8090/usuarios/54801732T",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8090",
+					"path": [
+						"usuarios",
+						"54801732T"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GESTOR GetUsuarios",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJJZCI6IjYzZTUyZTE5LWE2NzYtNDhiZC1hZjk5LTc4MWViMjVlNzRkNyIsInN1YiI6Imdlc3RvciIsIk5vbWJyZSI6InBhY28xIHBlcmV6IiwiUm9sZXMiOiJHZXN0b3IiLCJpYXQiOjE3MTUyMDE2NjMsImV4cCI6MTcxNTIwNTI2M30.oBNZOYHP9MB9i-tXHVt8K_yb04FPjLfnHr_yweuzGqA",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8090/usuarios",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8090",
+					"path": [
+						"usuarios"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Usuario Login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"ramsesdm\",\r\n    \"password\": \"123\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8090/auth/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8090",
+					"path": [
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Usuario Login oauth2",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8090/auth/oauth2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8090",
+					"path": [
+						"auth",
+						"oauth2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GESTOR Delete user",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJJZCI6IjYzZTUyZTE5LWE2NzYtNDhiZC1hZjk5LTc4MWViMjVlNzRkNyIsInN1YiI6Imdlc3RvciIsIk5vbWJyZSI6InBhY28xIHBlcmV6IiwiUm9sZXMiOiJHZXN0b3IiLCJpYXQiOjE3MTUyMDE2NjMsImV4cCI6MTcxNTIwNTI2M30.oBNZOYHP9MB9i-tXHVt8K_yb04FPjLfnHr_yweuzGqA",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8090/usuarios/54801732T",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8090",
+					"path": [
+						"usuarios",
+						"54801732T"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GESTOR CrearEstacion",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJJZCI6IjU0ODAxNzMyWiIsInN1YiI6InJhbXNlc2dlc3RvciIsIk5vbWJyZSI6Ikdlc3RvciBEdWlkYXIiLCJSb2xlcyI6Ikdlc3RvciIsImlhdCI6MTcxNTE4NzM1MCwiZXhwIjoxNzE1MTkwOTUwfQ.wY23ezDraqx_MJWUsxOhDNLq6HaByrot8eYEvCaHdpk",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"nombre\": \"Estacion Alahma2\",\r\n  \"numPuestos\": 11,\r\n  \"direccion\": \"Calle 16\",\r\n  \"latitud\": 39.1112,\r\n  \"longitud\": -2.4566\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8090/estaciones",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8090",
+					"path": [
+						"estaciones"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GESTOR AltaBicicleta",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJJZCI6IjU0ODAxNzMyWiIsInN1YiI6InJhbXNlc2dlc3RvciIsIk5vbWJyZSI6Ikdlc3RvciBEdWlkYXIiLCJSb2xlcyI6Ikdlc3RvciIsImlhdCI6MTcxNTE4NzM1MCwiZXhwIjoxNzE1MTkwOTUwfQ.wY23ezDraqx_MJWUsxOhDNLq6HaByrot8eYEvCaHdpk",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"modelo\": \"BMX3\",\r\n  \"idEstacion\": \"65a644d0dc9e5575dd23eb99\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8090/bicis",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8090",
+					"path": [
+						"bicis"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "USUARIO CrearReserva",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJJZCI6IjU0ODAxNzMyVCIsInN1YiI6InJhbXNlc2RtIiwiTm9tYnJlIjoicmFtc2VzIGR1aWRhciIsIlJvbGVzIjoiVXN1YXJpbyIsImlhdCI6MTcxNTIwMzIyNywiZXhwIjoxNzE1MjA2ODI3fQ.gkJnweqCreEubLgNRinigrzHxoqh0Al3CNBtnQ-TWPs",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "idBici",
+							"value": "34",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8090/alquileres/usuarios/11111111A/reservas",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8090",
+					"path": [
+						"alquileres",
+						"usuarios",
+						"11111111A",
+						"reservas"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "USUARIO AlquilarBici Error",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJJZCI6IjU0ODAxNzMyVCIsInN1YiI6InJhbXNlc2RtIiwiTm9tYnJlIjoicmFtc2VzIGR1aWRhciIsIlJvbGVzIjoiVXN1YXJpbyIsImlhdCI6MTcxNTIwMzIyNywiZXhwIjoxNzE1MjA2ODI3fQ.gkJnweqCreEubLgNRinigrzHxoqh0Al3CNBtnQ-TWPs",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "idBici",
+							"value": "34",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8090/alquileres/usuarios/11111111A/alquileres",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8090",
+					"path": [
+						"alquileres",
+						"usuarios",
+						"11111111A",
+						"alquileres"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Usuario confirmarReserva",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJJZCI6IjU0ODAxNzMyVCIsInN1YiI6InJhbXNlc2RtIiwiTm9tYnJlIjoicmFtc2VzIGR1aWRhciIsIlJvbGVzIjoiVXN1YXJpbyIsImlhdCI6MTcxNTIwMzIyNywiZXhwIjoxNzE1MjA2ODI3fQ.gkJnweqCreEubLgNRinigrzHxoqh0Al3CNBtnQ-TWPs",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PATCH",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8090/alquileres/usuarios/11111111A/reservas",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8090",
+					"path": [
+						"alquileres",
+						"usuarios",
+						"11111111A",
+						"reservas"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "USUARIO AlquilarBici bien",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJJZCI6IjU0ODAxNzMyVCIsInN1YiI6InJhbXNlc2RtIiwiTm9tYnJlIjoicmFtc2VzIGR1aWRhciIsIlJvbGVzIjoiVXN1YXJpbyIsImlhdCI6MTcxNTIwMzIyNywiZXhwIjoxNzE1MjA2ODI3fQ.gkJnweqCreEubLgNRinigrzHxoqh0Al3CNBtnQ-TWPs",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "idBici",
+							"value": "64",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8090/alquileres/usuarios/11111111A/alquileres",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8090",
+					"path": [
+						"alquileres",
+						"usuarios",
+						"11111111A",
+						"alquileres"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "USUARIO HistorialUsuario",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJJZCI6IjExMTExMTExQSIsInN1YiI6InVzdWFyaW8iLCJOb21icmUiOiJwYWNvIHBlcmV6IiwiUm9sZXMiOiJVc3VhcmlvIiwiaWF0IjoxNzE1MTg0ODc5LCJleHAiOjE3MTUxODg0Nzl9.2U75Umw1NYr4M3I8YPFET7isk9qLu8ChPALygYsw2A8",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8090/alquileres/usuarios/11111111A",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8090",
+					"path": [
+						"alquileres",
+						"usuarios",
+						"11111111A"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "USUARIO DejarBici",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJJZCI6IjExMTExMTExQSIsInN1YiI6InVzdWFyaW8iLCJOb21icmUiOiJwYWNvIHBlcmV6IiwiUm9sZXMiOiJVc3VhcmlvIiwiaWF0IjoxNzE1MTg0ODc5LCJleHAiOjE3MTUxODg0Nzl9.2U75Umw1NYr4M3I8YPFET7isk9qLu8ChPALygYsw2A8",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "idEstacion",
+							"value": "663a672dd1542219e30d8d2b",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8090/alquileres/usuarios/11111111A/alquileres",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8090",
+					"path": [
+						"alquileres",
+						"usuarios",
+						"11111111A",
+						"alquileres"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "USUARIO ListarEstaciones",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJJZCI6IjExMTExMTExQSIsInN1YiI6InVzdWFyaW8iLCJOb21icmUiOiJwYWNvIHBlcmV6IiwiUm9sZXMiOiJVc3VhcmlvIiwiaWF0IjoxNzE1MTg0ODc5LCJleHAiOjE3MTUxODg0Nzl9.2U75Umw1NYr4M3I8YPFET7isk9qLu8ChPALygYsw2A8",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8090/estaciones?page=0&size=10",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8090",
+					"path": [
+						"estaciones"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "0"
+						},
+						{
+							"key": "size",
+							"value": "10"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "USUARIO InformacionEstacion",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJJZCI6IjExMTExMTExQSIsInN1YiI6InVzdWFyaW8iLCJOb21icmUiOiJwYWNvIHBlcmV6IiwiUm9sZXMiOiJVc3VhcmlvIiwiaWF0IjoxNzE1MTg0ODc5LCJleHAiOjE3MTUxODg0Nzl9.2U75Umw1NYr4M3I8YPFET7isk9qLu8ChPALygYsw2A8",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8090/estaciones/663a419de978a31475613499",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8090",
+					"path": [
+						"estaciones",
+						"663a419de978a31475613499"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "USUARIO ListadoBiciEnEstacion",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJJZCI6IjExMTExMTExQSIsInN1YiI6InVzdWFyaW8iLCJOb21icmUiOiJwYWNvIHBlcmV6IiwiUm9sZXMiOiJVc3VhcmlvIiwiaWF0IjoxNzE1MTg0ODc5LCJleHAiOjE3MTUxODg0Nzl9.2U75Umw1NYr4M3I8YPFET7isk9qLu8ChPALygYsw2A8",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8090/estaciones/663a419de978a31475613499/bicis?page=0&size=10",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8090",
+					"path": [
+						"estaciones",
+						"663a419de978a31475613499",
+						"bicis"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "0"
+						},
+						{
+							"key": "size",
+							"value": "10"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "USUARIO EstacionarBici REEMPLAZAR ID",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJJZCI6IjExMTExMTExQSIsInN1YiI6InVzdWFyaW8iLCJOb21icmUiOiJwYWNvIHBlcmV6IiwiUm9sZXMiOiJVc3VhcmlvIiwiaWF0IjoxNzE1MTg0ODc5LCJleHAiOjE3MTUxODg0Nzl9.2U75Umw1NYr4M3I8YPFET7isk9qLu8ChPALygYsw2A8",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "34"
+				},
+				"url": {
+					"raw": "http://localhost:8090/estaciones/663a419de978a31475613499/bicis",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8090",
+					"path": [
+						"estaciones",
+						"663a419de978a31475613499",
+						"bicis"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GESTOR LiberarUsuario",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJJZCI6IjU0ODAxNzMyWiIsInN1YiI6InJhbXNlc2dlc3RvciIsIk5vbWJyZSI6Ikdlc3RvciBEdWlkYXIiLCJSb2xlcyI6Ikdlc3RvciIsImlhdCI6MTcxNTE4NzM1MCwiZXhwIjoxNzE1MTkwOTUwfQ.wY23ezDraqx_MJWUsxOhDNLq6HaByrot8eYEvCaHdpk",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PATCH",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8090/alquileres/usuarios/11111111A",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8090",
+					"path": [
+						"alquileres",
+						"usuarios",
+						"11111111A"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GESTOR BajaBici",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJJZCI6IjU0ODAxNzMyWiIsInN1YiI6InJhbXNlc2dlc3RvciIsIk5vbWJyZSI6Ikdlc3RvciBEdWlkYXIiLCJSb2xlcyI6Ikdlc3RvciIsImlhdCI6MTcxNTE4NzM1MCwiZXhwIjoxNzE1MTkwOTUwfQ.wY23ezDraqx_MJWUsxOhDNLq6HaByrot8eYEvCaHdpk",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "\"Baja por tiempo\"",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8090/bicis/34",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8090",
+					"path": [
+						"bicis",
+						"34"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GESTOR ListadoTodasBicis",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJJZCI6IjU0ODAxNzMyWiIsInN1YiI6InJhbXNlc2dlc3RvciIsIk5vbWJyZSI6Ikdlc3RvciBEdWlkYXIiLCJSb2xlcyI6Ikdlc3RvciIsImlhdCI6MTcxNTE4NzM1MCwiZXhwIjoxNzE1MTkwOTUwfQ.wY23ezDraqx_MJWUsxOhDNLq6HaByrot8eYEvCaHdpk",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8090/estaciones/65a644d0dc9e5575dd23eb99/bicis?page=0&size=10",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8090",
+					"path": [
+						"estaciones",
+						"65a644d0dc9e5575dd23eb99",
+						"bicis"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "0"
+						},
+						{
+							"key": "size",
+							"value": "10"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

@@ -11,6 +11,17 @@ public class ServicioUsuarios : IServicioUsuarios
     public ServicioUsuarios(RepositorioUsuariosMongoDB repositorio)
     {
         this.repositorio = repositorio;
+        this.repositorio.Add(new Usuario
+            {
+                Id = Guid.NewGuid().ToString(),
+                Username = "gestor",
+                Contrasena = "gestor",
+                Nombre = "paco1",
+                Apellidos = "perez",
+                Direccion = "calle 33",
+                Rol = RolUsuario.Gestor,
+                Estado = EstadoUsuario.DE_ALTA
+            });
     }
 /*
 -Solicitud código de activación (para el gestor): tiene como parámetro el identificador de un usuario. 

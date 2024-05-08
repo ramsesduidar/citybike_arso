@@ -17,7 +17,7 @@ public class AuthService {
 
     public AuthService() {
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://localhost:5200/api/usuarios/")
+                .baseUrl("http://usuarios:5200/api/usuarios/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
