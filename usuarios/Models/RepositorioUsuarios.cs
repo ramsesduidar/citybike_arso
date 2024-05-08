@@ -10,8 +10,21 @@ public class RepositorioUsuariosMongoDB : IRepositorio<Usuario, string>
 
     public RepositorioUsuariosMongoDB()
     {
-        var client = new MongoClient("mongodb+srv://ramsesdm:1hnmV75Fz2EXd44Y@cluster0.8o0l6d2.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0");
-        var database = client.GetDatabase("Cluster0");
+        // Leer la URI de conexión desde la variable de entorno
+        string? mongoDbUri = Environment.GetEnvironmentVariable("MONGODB_URI");
+        string? mongodatabase = Environment.GetEnvironmentVariable("MONGODB_DATABASE");
+
+        if (string.IsNullOrWhiteSpace(mongoDbUri))
+        {
+            mongoDbUri = "mongodb+srv://ramsesdm:1hnmV75Fz2EXd44Y@cluster0.8o0l6d2.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+        }
+        if (string.IsNullOrWhiteSpace(mongoDbUri))
+        {
+            mongodatabase = "Cluster0";
+        }
+
+        var client = new MongoClient(mongoDbUri);
+        var database = client.GetDatabase(mongodatabase);
 
         usuarios = database.GetCollection<Usuario>("usuario");
     }

@@ -138,7 +138,7 @@ public class Estacion implements Identificable {
 	
 	public boolean estaLlena() {
 		
-		return this.numPuestos >= this.idBicis.size();
+		return this.numPuestos <= this.idBicis.size();
 	}
 	
 	public int huecosLibres() {

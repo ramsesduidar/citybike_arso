@@ -1,0 +1,92 @@
+version: "3.7"
+
+services:
+  rabbitmq:
+    image: rabbitmq:3-management
+    hostname: my-rabbit
+    container_name: rabbit1
+    ports:
+      - "5672:5672"  # Puerto para la comunicación AMQP
+      - "15672:15672"  # Puerto para el panel de control de RabbitMQ (opcional)
+  alquileres:
+    build: ./alquileres-DuidarMoreno
+    environment:
+      - RABBITMQ_URI=amqp://guest:guest@rabbit1:5672
+    ports:
+      - "8080:8080" # se podrían quitar para no hacerlos accesibles directamente y solo por la pasarela
+    depends_on:
+      - mysql
+      - rabbitmq
+  estaciones:
+    build: ./estaciones-DuidarMoreno
+    ports:
+      - "8081:8081"
+    environment:
+      - SPRING_DATA_MONGODB_URI=mongodb://root:example@mongo:27017/estaciones?authSource=admin
+      - SPRING.RABBITMQ.ADDRESSES=amqp://guest:guest@rabbitmq:5672
+    depends_on:
+      - mongo
+      - rabbitmq
+  usuarios:
+    build: ./usuarios
+    ports:
+      - "5200:5200"
+    environment:
+      - MONGODB_URI=mongodb://root:example@mongo:27017/usuarios?authSource=admin
+    depends_on:
+      - mongo
+  pasarela:
+    build: ./pasarela
+    ports:
+      - "8090:8090"
+    environment:
+      - SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GITHUB_CLIENTID=07ffd267efb65801b093
+      - SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GITHUB_CLIENTSECRET=f14dfc8d8eeddc1f8ad2e2fe6fc00f4773b7db3d
+  mysql:
+    image: mysql:8.0
+    container_name: mysql
+    hostname: mysqlhost
+    environment:
+      MYSQL_ROOT_PASSWORD: 1Qaz2Wsx
+      MYSQL_DATABASE: alquileres
+      MYSQL_USER: estudiante
+      MYSQL_PASSWORD: contrasena
+    ports:
+      - "6603:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+  phpmyadmin:
+    image: phpmyadmin:5.2.0
+    container_name: phpmyadmin
+    links:
+      - mysql
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+    ports:
+      - 6969:80
+  mongo: 
+    image: mongo
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+  mongo-express: 
+    image: mongo-express
+    restart: always
+    ports:
+      - 7070:8081
+    environment:
+      ME_CONFIG_BASICAUTH: false
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: example
+      ME_CONFIG_MONGODB_URL: mongodb://root:example@mongo:27017/
+    depends_on:
+      - mongo
+volumes:
+  mongo_data:
+  mysql_data:

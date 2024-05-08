@@ -10,11 +10,11 @@
         <properties>
             <property name="javax.persistence.jdbc.driver"
                 value="com.mysql.cj.jdbc.Driver" />
-            <property name="javax.persistence.jdbc.user" value="root" />
+            <property name="javax.persistence.jdbc.user" value="estudiante" />
             <property name="javax.persistence.jdbc.password"
-                value="1Qaz2Wsx" />
+                value="contrasena" />
             <property name="javax.persistence.jdbc.url"
-                value="jdbc:mysql://localhost:3306/alquileres?serverTimezone=CET" />
+                value="jdbc:mysql://mysqlhost:3306/alquileres?serverTimezone=CET" />
             <property name="eclipselink.ddl-generation"
                 value="create-or-extend-tables" />
             <property name="eclipselink.query-results-cache"

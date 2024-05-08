@@ -10,11 +10,15 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+	@Autowired
+    private SecuritySuccessHandler successHandler;
+	
 	@Autowired
     private JwtRequestFilter authenticationRequestFilter;
 	
@@ -27,6 +31,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .antMatchers(HttpMethod.POST, "/usuarios").hasAuthority("Gestor")
             .antMatchers(HttpMethod.DELETE, "/usuarios/*").hasAuthority("Gestor")// Proteger las rutas del microservicio de usuarios
             .anyRequest().permitAll() // Requerir autenticación para todas las demás rutas
+        	.and()
+        	.oauth2Login().successHandler(this.successHandler)
         	.and()
             .sessionManagement()
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS);

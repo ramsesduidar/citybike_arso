@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Map;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -26,8 +27,17 @@ public class ServicioEventosRabbitMQ implements IServicioEventos{
 	private ConnectionFactory factory;
 	
 	public ServicioEventosRabbitMQ() throws Exception{
+		Map<String, String> env = System.getenv();
+        String uri = env.get("RABBITMQ_URI");
+        
+        if (uri == null) {
+        	uri = "amqp://guest:guest@rabbitmq:5672";
+        }
+        
 		factory = new ConnectionFactory();
-		factory.setUri("amqps://gsjdktco:VsVS3S5wsqIHdqnvWb27kSFlmjJ6UpwA@rat.rmq2.cloudamqp.com/gsjdktco");
+		factory.setUri(uri);
+		
+		
 	}
 	
 	@Override
@@ -68,8 +78,28 @@ public class ServicioEventosRabbitMQ implements IServicioEventos{
 	@Override
 	public void subscribirseEventoBiciDesactivada(IEventosListener listener) throws Exception{
 		
-		Connection connection = factory.newConnection();
+		Connection connection;
+		try {
+			connection = factory.newConnection();
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		connection = factory.newConnection(); //al segundo intento no recuperamos.
 		final Channel channel = connection.createChannel();
+		
+		// Crear cola y enlazar con exchange
+
+		final String exchangeName = "cityBike";
+		final String queueName = "cityBike-alquileres";
+		final String bindingKey = "cityBike.estaciones.#";
+
+		boolean durable = true;
+		boolean exclusive = false;
+		boolean autodelete = false;
+		Map<String, Object> properties = null; // sin propiedades
+		channel.queueDeclare(queueName, durable, exclusive, autodelete, properties);
+
+		channel.queueBind(queueName, exchangeName, bindingKey);
 
 		//Consumidor
 
