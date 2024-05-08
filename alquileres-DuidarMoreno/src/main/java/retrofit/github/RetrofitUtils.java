@@ -16,7 +16,7 @@ public class RetrofitUtils {
     public static EstacionesRestClient getEstacionesRestClient() {
         if (estacionesRestClient == null) {
             retrofit = new Retrofit.Builder()
-                    .baseUrl("http://localhost:8080/api/")
+                    .baseUrl("http://estaciones:8080/api/")
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
 
