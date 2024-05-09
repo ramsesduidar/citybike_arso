@@ -63,7 +63,23 @@ public class EstacionController {
     	Page<EstacionDTO> estaciones = servicio.recuperarTodasEstacionesPaginado(paginacion)
         		.map( e -> new EstacionDTO(e));
     	
-    	return  this.pagedRA_Estacion.toModel(estaciones);
+    	//return  this.pagedRA_Estacion.toModel(estaciones);
+    	
+    	return this.pagedRA_Estacion.toModel(estaciones, estacion -> {
+			// Envolver el DTO con EntityModel y agregar enlace self
+			EntityModel<EstacionDTO> model = EntityModel.of(estacion);
+			try {
+				model.add(
+						WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder
+								.methodOn(EstacionController.class)
+								.getEstacionById(estacion.getId()))
+						.withSelfRel());
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} 
+			return model;
+		});
     	
     }
 
@@ -72,8 +88,18 @@ public class EstacionController {
     @Operation(
     		summary ="Obtener Estacione",
     		description ="Operacion para obtener una Estacion dado su id (Solo para el rol Usuario)")
-    public EstacionDTO getEstacionById(@PathVariable String id) throws DataAccessException, EntidadNoEncontrada {
-        return new EstacionDTO(servicio.recuperarEstacion(id));
+    public EntityModel<EstacionDTO> getEstacionById(@PathVariable String id) throws DataAccessException, EntidadNoEncontrada {
+    	EstacionDTO dto = new EstacionDTO(servicio.recuperarEstacion(id));
+    	
+    	EntityModel<EstacionDTO> model = EntityModel.of(dto);
+
+    	model.add(
+    			WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder
+    					.methodOn(EstacionController.class)
+    					.getEstacionById(id))
+    			.withSelfRel());
+
+    	return model;
     }
 
     @PostMapping()
