@@ -7,7 +7,7 @@ using Usuarios.Servicios;
 
 namespace Usuarios.Controlador;
 
-[Route("api/usuarios")]
+[Route("api")]
 [ApiController]
 public class UsuarioController : ControllerBase
 {
@@ -18,13 +18,13 @@ public class UsuarioController : ControllerBase
         this.servicio = servicio;
     }
 
-    [HttpPost()]
+    [HttpPost("codigos")]
     public ActionResult<string> SolicitudCodigoActivacion([FromBody]string id)
     {
         return this.servicio.SolicitudCodigoActivacion(id);
     }
 
-    [HttpPost("{id}")]
+    [HttpPost("usuarios")]
     public IActionResult AltaUsuario(AltaDTO alta)
     {
         if(alta.Contraseña != null && alta.Oauth2 != null)
@@ -43,7 +43,7 @@ public class UsuarioController : ControllerBase
         return NoContent();
     }
 
-    [HttpDelete("{id}")]
+    [HttpDelete("usuarios/{id}")]
     public IActionResult BajaUsuario(string id)
     {
         this.servicio.BajaUsuario(id);
@@ -51,19 +51,19 @@ public class UsuarioController : ControllerBase
         return NoContent();
     }
 
-    [HttpPost("{usuario}/contrasena")]
+    [HttpPost("usuarios/{usuario}/contrasena")]
     public ActionResult<Dictionary<string, string>> VerificarUsuarioContrasena(string usuario, [FromBody]string contrasena)
     {
         return this.servicio.VerificarUsuarioContrasena(usuario, contrasena);
     }
     
-    [HttpGet("{oauth2}/oauth2")]
+    [HttpGet("usuarios/{oauth2}/oauth2")]
     public ActionResult<Dictionary<string, string>> VerificarUsuarioOAuth2(string oauth2)
     {
         return this.servicio.VerificarUsuarioOAuth2(oauth2);
     }
 
-    [HttpGet]
+    [HttpGet("usuarios")]
     public ActionResult<List<Usuario>> GetUsuarios()
     {
         return this.servicio.GetUsuarios();

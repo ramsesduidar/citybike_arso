@@ -27,7 +27,7 @@ namespace Usuarios
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddSingleton<RepositorioUsuariosMongoDB, RepositorioUsuariosMongoDB>(); 
+            services.AddSingleton<IRepositorioUsuarios, RepositorioUsuariosMongoDB>(); 
 
             services.AddSingleton<IServicioUsuarios, ServicioUsuarios>(); 
 

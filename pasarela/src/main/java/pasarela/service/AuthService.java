@@ -15,9 +15,11 @@ public class AuthService {
 
     private final UsuariosService usuariosService;
 
-    public AuthService() {
+    public AuthService(@Value("${zuul.routes.usuarios.url}") String ruta) {
+    	
+    	System.out.println("la ruta del fichero: " + ruta);
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://usuarios:5200/api/usuarios/")
+                .baseUrl(ruta)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 

@@ -43,6 +43,11 @@ services:
     environment:
       - SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GITHUB_CLIENTID=07ffd267efb65801b093
       - SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GITHUB_CLIENTSECRET=f14dfc8d8eeddc1f8ad2e2fe6fc00f4773b7db3d
+      - ZUUL_ROUTES_USUARIOS_URL=http://usuarios:5200/api/usuarios/
+      - ZUUL_ROUTES_CODIGOS_URL=http://usuarios:5200/api/codigos/
+      - ZUUL_ROUTES_ESTACIONES_URL=http://estaciones:8081/estaciones/
+      - ZUUL_ROUTES_BICIS_URL=http://estaciones:8081/bicis/
+      - ZUUL_ROUTES_ALQUILERES_URL=http://alquileres:8080/api/usuarios/
   mysql:
     image: mysql:8.0
     container_name: mysql

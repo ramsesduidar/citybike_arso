@@ -100,14 +100,14 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8090/usuarios",
+					"raw": "http://localhost:8090/codigos",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8090",
 					"path": [
-						"usuarios"
+						"codigos"
 					]
 				}
 			},
@@ -131,15 +131,14 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8090/usuarios/54801732T",
+					"raw": "http://localhost:8090/usuarios",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8090",
 					"path": [
-						"usuarios",
-						"54801732T"
+						"usuarios"
 					]
 				}
 			},
@@ -170,14 +169,14 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8090/usuarios",
+					"raw": "http://localhost:8090/codigos",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8090",
 					"path": [
-						"usuarios"
+						"codigos"
 					]
 				}
 			},
@@ -201,15 +200,14 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8090/usuarios/54801732T",
+					"raw": "http://localhost:8090/usuarios",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8090",
 					"path": [
-						"usuarios",
-						"54801732T"
+						"usuarios"
 					]
 				}
 			},

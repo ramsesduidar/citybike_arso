@@ -4,7 +4,14 @@ using Usuarios.Modelo;
 
 namespace Usuarios.Repositorios;
 
-public class RepositorioUsuariosMongoDB : IRepositorio<Usuario, string>
+public interface IRepositorioUsuarios : IRepositorio<Usuario, string>{
+    public Usuario GetByUsuarioContraseña(string username, string constraseña);
+    
+    public Usuario GetByOAuth2(string oauth2);
+
+}
+
+public class RepositorioUsuariosMongoDB : IRepositorioUsuarios
 {
     private readonly IMongoCollection<Usuario> usuarios;
 
@@ -14,16 +21,15 @@ public class RepositorioUsuariosMongoDB : IRepositorio<Usuario, string>
         string? mongoDbUri = Environment.GetEnvironmentVariable("MONGODB_URI");
         string? mongodatabase = Environment.GetEnvironmentVariable("MONGODB_DATABASE");
 
-        Console.WriteLine("Variables de entorno: " + mongoDbUri + " " + mongoDbUri);
+        Console.WriteLine("Variables de entorno: -" + mongoDbUri + "-" + mongoDbUri + "-");
 
-        if (string.IsNullOrWhiteSpace(mongoDbUri))
+        if (string.IsNullOrWhiteSpace(mongoDbUri) || string.IsNullOrWhiteSpace(mongodatabase))
         {
+            Console.WriteLine("no variables de entorno para mongo");
             mongoDbUri = "mongodb+srv://ramsesdm:1hnmV75Fz2EXd44Y@cluster0.8o0l6d2.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
-        }
-        if (string.IsNullOrWhiteSpace(mongoDbUri))
-        {
             mongodatabase = "Cluster0";
         }
+
 
         var client = new MongoClient(mongoDbUri);
         var database = client.GetDatabase(mongodatabase);

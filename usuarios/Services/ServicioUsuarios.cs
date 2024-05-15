@@ -6,9 +6,9 @@ namespace Usuarios.Servicios;
 
 public class ServicioUsuarios : IServicioUsuarios
 {
-    private RepositorioUsuariosMongoDB repositorio;
+    private IRepositorioUsuarios repositorio;
 
-    public ServicioUsuarios(RepositorioUsuariosMongoDB repositorio)
+    public ServicioUsuarios(IRepositorioUsuarios repositorio)
     {
         this.repositorio = repositorio;
         this.repositorio.Add(new Usuario
