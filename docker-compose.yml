@@ -17,6 +17,7 @@ services:
     depends_on:
       - mysql
       - rabbitmq
+      - estaciones # estaciones tiene que crear el topic, sino queueBind() falla.
   estaciones:
     build: ./estaciones-DuidarMoreno
     ports:
