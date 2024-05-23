@@ -126,11 +126,6 @@ public class Estacion implements Identificable {
 		this.sitiosTuristicos = sitios;
 	}
 	
-	@Override
-	public String toString() {
-		return "Estacion [id=" + id + ", nombre=" + nombre + ", npuestos=" + numPuestos + ", fecha_Creacion=" + this.fechaDeAlta
-				+ "\r\n\tdireccion=" + direccion + ", coordenadas=" + coordenadas + ", sitios=" + sitiosTuristicos +"]";
-	}
 
 	public boolean containsBici(String id_bici) {
 		return this.idBicis.contains(id_bici);
@@ -156,6 +151,13 @@ public class Estacion implements Identificable {
 		if(this.idBicis.contains(id_bici))
 			return this.idBicis.remove(id_bici);
 		return false;
+	}
+
+	@Override
+	public String toString() {
+		return "Estacion [id=" + id + ", nombre=" + nombre + ", fechaDeAlta=" + fechaDeAlta + ", numPuestos="
+				+ numPuestos + ", direccion=" + direccion + ", coordenadas=" + coordenadas + ", sitiosTuristicos="
+				+ sitiosTuristicos + ", idBicis=" + idBicis + "]";
 	}
 
 	

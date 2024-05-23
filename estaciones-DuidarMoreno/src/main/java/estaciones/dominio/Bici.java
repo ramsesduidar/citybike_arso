@@ -204,6 +204,15 @@ public class Bici implements Identificable{
 		}
 		return null;
 	}
+
+	@Override
+	public String toString() {
+		return "Bici [id=" + id + ", modelo=" + modelo + ", fechaAlta=" + fechaAlta + ", fechaBaja=" + fechaBaja
+				+ ", motivo=" + motivo + ", estado=" + estado + ", idEstacion=" + idEstacion + ", incidencias="
+				+ incidencias + "]";
+	}
+	
+	
 	
 	
 }

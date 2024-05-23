@@ -22,6 +22,14 @@ public class ServicioUsuarios : IServicioUsuarios
                 Rol = RolUsuario.Gestor,
                 Estado = EstadoUsuario.DE_ALTA
             });
+
+        try{
+            Console.WriteLine("creado usuario...");
+            string cd = this.SolicitudCodigoActivacion("54801732T");
+            this.AltaUsuario(cd, "54801732T", "usuario", "usuario", "ramses", "duidar", "calle ave 12");
+        } catch (Exception e){
+            Console.WriteLine(e);
+        }
     }
 /*
 -Solicitud código de activación (para el gestor): tiene como parámetro el identificador de un usuario. 

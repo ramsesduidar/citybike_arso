@@ -13,7 +13,7 @@ public class EstacionDTO {
 	private String nombre;
 	
 	
-	private LocalDateTime fechaDeAlta;
+	private String fechaDeAlta;
 	
 	
 	private int numPuestos;
@@ -47,11 +47,11 @@ public class EstacionDTO {
 		this.nombre = nombre;
 	}
 
-	public LocalDateTime getFechaDeAlta() {
+	public String getFechaDeAlta() {
 		return fechaDeAlta;
 	}
 
-	public void setFechaDeAlta(LocalDateTime fechaDeAlta) {
+	public void setFechaDeAlta(String fechaDeAlta) {
 		this.fechaDeAlta = fechaDeAlta;
 	}
 
@@ -78,6 +78,14 @@ public class EstacionDTO {
 	public void setDireccion(String direccion) {
 		this.direccion = direccion;
 	}
+
+	@Override
+	public String toString() {
+		return "EstacionDTO [id=" + id + ", nombre=" + nombre + ", fechaDeAlta=" + fechaDeAlta + ", numPuestos="
+				+ numPuestos + ", huecosLibres=" + huecosLibres + ", direccion=" + direccion + "]";
+	}
+	
+	
 
 	
 }

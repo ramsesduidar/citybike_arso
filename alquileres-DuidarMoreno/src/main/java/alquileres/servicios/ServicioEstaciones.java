@@ -25,7 +25,7 @@ public class ServicioEstaciones implements IServicioEstaciones{
         try {
             Response<EstacionDTO> response = call.execute();
             if (response.isSuccessful()) {
-            	
+            	System.out.println(response.body());
                 return response.body().getHuecosLibres() > 0;
             } else {
                 return false;

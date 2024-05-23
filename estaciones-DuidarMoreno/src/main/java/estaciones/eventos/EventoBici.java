@@ -6,9 +6,9 @@ public class EventoBici {
 	
 	String idBici;
 	
-	LocalDateTime fecha;
+	String fecha;
 
-	public EventoBici(String idBici, LocalDateTime fecha) {
+	public EventoBici(String idBici, String fecha) {
 		this.idBici = idBici;
 		this.fecha = fecha;
 	}
@@ -29,12 +29,12 @@ public class EventoBici {
 	}
 
 
-	public LocalDateTime getFecha() {
+	public String getFecha() {
 		return fecha;
 	}
 
 
-	public void setFecha(LocalDateTime fecha) {
+	public void setFecha(String fecha) {
 		this.fecha = fecha;
 	}
 	

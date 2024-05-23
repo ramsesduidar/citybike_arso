@@ -16,9 +16,13 @@ import eventos.IEventosListener;
  */
 public interface IServicioEventos {
 	
+	void publicarEventoBiciReservada(String idBici, LocalDateTime fechaReserva) throws Exception;
+	
+	void publicarEventoReservaConfirmada(String idBici, LocalDateTime fechaConfirmacion) throws Exception;
+	
 	void publicarEventoBiciAlquilada(String idBici, LocalDateTime fechaAlquiler) throws Exception;
 	
-	void publicarEventoBiciAlquilerFin(String idBici, LocalDateTime fechaFinAlquiler) throws Exception;
+	void publicarEventoBiciAlquilerFin(String idBici, String idEstacion) throws Exception;
 	
 	void subscribirseEventoBiciDesactivada(IEventosListener listener) throws Exception;
 }

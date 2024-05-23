@@ -41,6 +41,20 @@ public class ServicioEventosRabbitMQ implements IServicioEventos{
 		System.out.println("Evento:" + body + " routingkey: " + routingKey);
 		System.out.println("Evento-idBici: " + evento.getIdBici());
 		
+		if (routingKey.endsWith("bicicleta-reservada"))
+			try {
+				listener.biciReservada(evento);
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+		
+		if (routingKey.endsWith("reserva-confirmada"))
+			try {
+				listener.reservaFin(evento);
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+		
 		if (routingKey.endsWith("bicicleta-alquilada"))
 			try {
 				listener.biciAlquilada(evento);
@@ -65,7 +79,7 @@ public class ServicioEventosRabbitMQ implements IServicioEventos{
 		rabbitTemplate.convertAndSend(
 				RabbitMQConfig.EXCHANGE_NAME,
 				"cityBike.estaciones.bicicleta-desactivada",
-				new EventoBici(idBici, fecha));
+				new EventoBici(idBici, fecha.toString()));
 		
 		
 	}

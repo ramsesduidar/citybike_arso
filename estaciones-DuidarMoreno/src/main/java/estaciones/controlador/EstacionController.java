@@ -50,7 +50,7 @@ public class EstacionController {
     }
 
     @GetMapping()
-    @PreAuthorize("hasAuthority('Usuario')")
+    @PreAuthorize("hasAuthority('Gestor') or hasAuthority('Usuario')")
     @Operation(
     		summary ="Obtener todas las Estaciones",
     		description ="Operacion para obtener todas las Estaciones (Solo para el rol Usuario)")
@@ -87,7 +87,7 @@ public class EstacionController {
     //@PreAuthorize("hasAuthority('Usuario')")
     @Operation(
     		summary ="Obtener Estacione",
-    		description ="Operacion para obtener una Estacion dado su id (Solo para el rol Usuario)")
+    		description ="Operacion para obtener una Estacion dado su id (Sin protección)")
     public EntityModel<EstacionDTO> getEstacionById(@PathVariable String id) throws DataAccessException, EntidadNoEncontrada {
     	EstacionDTO dto = new EstacionDTO(servicio.recuperarEstacion(id));
     	
@@ -179,10 +179,11 @@ public class EstacionController {
     //@PreAuthorize("hasAuthority('Usuario')")
     @Operation(
     		summary ="Estacionar Bici",
-    		description ="Estaciona una Bici en la Estacion dada por el id (Solo para el rol Usuario)")
+    		description ="Estaciona una Bici en la Estacion dada por el id (Sin protección)")
     public ResponseEntity<Void> estacionarBici(@PathVariable String id, 
     										@RequestBody String idBici) throws DataAccessException, EntidadNoEncontrada, ServicioException {
         
+    	System.out.println("estacionar bici: " + idBici + " en la estacion: " + id);
     	servicio.estacionarBici(idBici, id);
     	
     	return ResponseEntity.noContent().build();

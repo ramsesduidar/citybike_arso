@@ -41,6 +41,38 @@ public class ServicioEventosRabbitMQ implements IServicioEventos{
 	}
 	
 	@Override
+	public void publicarEventoBiciReservada(String idBici, LocalDateTime fechaReserva) throws Exception {
+		Connection connection = factory.newConnection();
+		Channel channel = connection.createChannel();
+		String mensaje = "{\"idBici\":\""+idBici+"\",\"fecha\":\""+fechaReserva.toString()+"\"}";
+		String routingkey = "cityBike.alquileres.bicicleta-reservada";
+		channel.basicPublish("cityBike", routingkey,
+				new AMQP.BasicProperties.Builder()
+				.contentType("application/json")
+				.build(),
+				mensaje.getBytes());
+		
+		channel.close();
+		connection.close();
+	}
+	
+	@Override
+	public void publicarEventoReservaConfirmada(String idBici, LocalDateTime fechaConfirmacion) throws Exception{
+		Connection connection = factory.newConnection();
+		Channel channel = connection.createChannel();
+		String mensaje = "{\"idBici\":\""+idBici+"\",\"fecha\":\""+fechaConfirmacion.toString()+"\"}";
+		String routingkey = "cityBike.alquileres.reserva-confirmada";
+		channel.basicPublish("cityBike", routingkey,
+				new AMQP.BasicProperties.Builder()
+				.contentType("application/json")
+				.build(),
+				mensaje.getBytes());
+		
+		channel.close();
+		connection.close();
+	}
+	
+	@Override
 	public void publicarEventoBiciAlquilada(String idBici, LocalDateTime fechaAlquiler) throws Exception{
 		
 		Connection connection = factory.newConnection();
@@ -59,10 +91,10 @@ public class ServicioEventosRabbitMQ implements IServicioEventos{
 	}
 
 	@Override
-	public void publicarEventoBiciAlquilerFin(String idBici, LocalDateTime fechaFinAlquiler) throws Exception{
+	public void publicarEventoBiciAlquilerFin(String idBici, String idEstacion) throws Exception{
 		Connection connection = factory.newConnection();
 		Channel channel = connection.createChannel();
-		String mensaje = "{\"idBici\":\""+idBici+"\",\"fecha\":\""+fechaFinAlquiler.toString()+"\"}";
+		String mensaje = "{\"idBici\":\""+idBici+"\",\"fecha\":\""+idEstacion+"\"}";
 		String routingkey = "cityBike.alquileres.bicicleta-alquiler-concluido";
 		channel.basicPublish("cityBike", routingkey,
 				new AMQP.BasicProperties.Builder()

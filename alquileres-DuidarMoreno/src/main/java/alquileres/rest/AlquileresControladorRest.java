@@ -54,10 +54,10 @@ public class AlquileresControladorRest {
 	@PATCH
 	@Path("{idU}/reservas")
 	@RolesAllowed(Rol.USUARIO_NORMAL)
-	public Response confirmarReserva( @PathParam("id") String id)
+	public Response confirmarReserva( @PathParam("idU") String idU)
 			throws Exception {
 		
-		this.servicio.confirmarReserva(id);
+		this.servicio.confirmarReserva(idU);
 		
 		return Response.status(Response.Status.NO_CONTENT).build();
 	}
@@ -92,7 +92,7 @@ public class AlquileresControladorRest {
 	
 	//curl -i -X PATCH --data "idEstacion=55" -H "Authorization: Bearer token_jwt" http://localhost:8080/api/usuarios/1/alquileres
 	@PATCH
-	@Path("{id}/alquileres")
+	@Path("{idU}/alquileres")
 	@RolesAllowed(Rol.USUARIO_NORMAL)
 	public Response dejarBicicleta( @PathParam("idU") String idU,
 			@FormParam("idEstacion") String idE) throws Exception {
@@ -107,10 +107,10 @@ public class AlquileresControladorRest {
 	@PATCH
 	@Path("{idU}")
 	@RolesAllowed(Rol.ADMINISTRADOR)
-	public Response liberarBloqueo( @PathParam("idU") String id)
+	public Response liberarBloqueo( @PathParam("idU") String idU)
 			throws Exception {
 		
-		this.servicio.liberarBloqueo(id);
+		this.servicio.liberarBloqueo(idU);
 		
 		return Response.status(Response.Status.NO_CONTENT).build();
 	}

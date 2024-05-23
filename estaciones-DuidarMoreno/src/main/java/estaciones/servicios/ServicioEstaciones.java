@@ -207,6 +207,8 @@ public class ServicioEstaciones implements IServicioEstaciones, IEventosListener
 	@Override
 	public void retirarBici(String id_bici) throws DataAccessException, EntidadNoEncontrada, ServicioException {
 		
+		System.out.println("Retirar bici: " + id_bici);
+		
 		Bici bici = this.recuperarBici(id_bici);
 		
 		String id_estacion = bici.getIdEstacion();
@@ -224,8 +226,11 @@ public class ServicioEstaciones implements IServicioEstaciones, IEventosListener
 		hist.setFechaFin(LocalDateTime.now());
 		
 		repositorioHistorico.save(hist);
-		repositorioBici.save(bici);
-		repositorioEstacion.save(estacion);
+		Bici nuew = repositorioBici.save(bici);
+		System.out.println(bici);
+		System.out.println(estacion);
+		Estacion es2 = repositorioEstacion.save(estacion);
+		System.out.println(es2);
 	}
 
 	@Override
@@ -324,6 +329,27 @@ public class ServicioEstaciones implements IServicioEstaciones, IEventosListener
 
 	@Override
 	public void biciAlquilada(EventoBici evento) throws Exception {
+		this.retirarBici(evento.getIdBici());
+		
+		Bici bici = this.recuperarBici(evento.getIdBici());
+		bici.setEstado(EstadoBici.NO_DISPONIBLE);
+		this.repositorioBici.save(bici);
+		b
+	}
+
+	@Override
+	public void alquilerFin(EventoBici evento) throws Exception {
+		Bici bici = this.recuperarBici(evento.getIdBici());
+		
+		bici.setEstado(EstadoBici.DISPONIBLE);
+		this.repositorioBici.save(bici);
+		
+		this.estacionarBici(bici.getId(), evento.getFecha());
+	}
+
+	
+	@Override
+	public void biciReservada(EventoBici evento) throws Exception {
 		Bici bici = this.recuperarBici(evento.getIdBici());
 		bici.setEstado(EstadoBici.NO_DISPONIBLE);
 		
@@ -332,11 +358,10 @@ public class ServicioEstaciones implements IServicioEstaciones, IEventosListener
 	}
 
 	@Override
-	public void alquilerFin(EventoBici evento) throws Exception {
-		Bici bici = this.recuperarBici(evento.getIdBici());
-		bici.setEstado(EstadoBici.DISPONIBLE);
+	public void reservaFin(EventoBici evento) throws Exception {
 		
-		this.repositorioBici.save(bici);
+		this.retirarBici(evento.getIdBici());
+		
 	}
 	
 	

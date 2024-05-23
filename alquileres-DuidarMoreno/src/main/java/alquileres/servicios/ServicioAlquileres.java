@@ -65,6 +65,13 @@ public class ServicioAlquileres implements IServicioAlquileres, IEventosListener
 		user.addReserva(idBici, LocalDateTime.now(), LocalDateTime.now().plusMinutes(30));
 		repo.update(user);
 		
+		try {
+			this.eventosService.publicarEventoBiciReservada(idBici, LocalDateTime.now());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 
 	/*
@@ -86,14 +93,15 @@ public class ServicioAlquileres implements IServicioAlquileres, IEventosListener
 					+ "no tiene ninguna reserva activa");
 		
 		LocalDateTime fecha = LocalDateTime.now();
-		user.addAlquiler(activa.getIdBicicleta(), fecha);
+		String idBici = activa.getIdBicicleta();
+		user.addAlquiler(idBici, fecha);
 		
 		user.deleteReservaActiva();
 		
 		repo.update(user);
 		
 		try {
-			this.eventosService.publicarEventoBiciAlquilada(activa.getIdBicicleta(), fecha);
+			this.eventosService.publicarEventoReservaConfirmada(idBici, fecha);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -182,17 +190,19 @@ public class ServicioAlquileres implements IServicioAlquileres, IEventosListener
 		
 		String idBici = user.terminarAlquilerActivo();
 		
+		try {
+			this.eventosService.publicarEventoBiciAlquilerFin(idBici, idEstacion);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		service.estacionarBici(idEstacion, idBici);
 		
 		System.out.println("llamo a repo despues de dejar bici");
 		repo.update(user);
 		
-		try {
-			this.eventosService.publicarEventoBiciAlquilerFin(idBici, LocalDateTime.now());
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
 		
 	}
 
