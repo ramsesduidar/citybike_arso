@@ -135,6 +135,12 @@ de cada grupo (nombre completo, correo electrónico, teléfono, dirección posta
             throw new ArgumentException("El usuario con " + id + " , ya está dado de alta");
         }
 
+        Usuario usuario2 = this.repositorio.GetByOAuth2(oauth2);
+
+        if(usuario2 != null){
+            throw new ArgumentException("El usuario de GitHub: " + oauth2 + " ya está registrado en la aplicación");
+        }
+
         usuario1.Estado = EstadoUsuario.DE_ALTA;
         usuario1.Username = usuario;
         usuario1.OAuth2 = oauth2;

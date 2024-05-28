@@ -77,11 +77,22 @@ public class ManejadorGlobalErrores : ExceptionFilterAttribute
         base.OnException(context);
 
         if (context.Exception is ArgumentException) {
-            context.Result = new BadRequestResult();
+            context.Result = new MyResult(context.Exception.Message);
+            
         } 
 
         if (context.Exception is EntidadNoEncontradaException) {
             context.Result = new NotFoundResult();
         }        
+    }
+
+}
+
+public class MyResult : BadRequestResult{
+    public string Message {get; set;}
+
+    public MyResult(string mess) : base()
+    {
+        this.Message = mess;
     }
 }
