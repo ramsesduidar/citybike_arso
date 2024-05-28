@@ -1,7 +1,11 @@
 package pasarela.auth;
 
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
+
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -39,7 +43,19 @@ public class SecuritySuccessHandler implements AuthenticationSuccessHandler {
             
             AuthResponse respuesta = new AuthResponse(token, claims);
             ObjectMapper mapper = new ObjectMapper();
-            response.getWriter().append(mapper.writeValueAsString(respuesta));
+            String info = mapper.writeValueAsString(respuesta);
+            info = URLEncoder.encode(info, StandardCharsets.UTF_8.toString());
+            Cookie jwtCookie = new Cookie("jwtToken", info);
+            jwtCookie.setHttpOnly(true);
+            jwtCookie.setSecure(true); // Asegúrate de usar HTTPS en producción
+            jwtCookie.setPath("/");
+            jwtCookie.setMaxAge(60 * 60); // 1 hora de expiración
+
+            response.addCookie(jwtCookie);
+            
+            //response.getWriter().append(info).close();
+            // Redirigir al frontend
+            response.sendRedirect("http://localhost:3030/login/oauth2");
         } else {
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Usuario "+usuario.getName()
             											+" no está autorizado en la aplicación");

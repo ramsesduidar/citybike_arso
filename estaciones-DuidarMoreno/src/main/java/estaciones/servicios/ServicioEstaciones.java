@@ -334,7 +334,6 @@ public class ServicioEstaciones implements IServicioEstaciones, IEventosListener
 		Bici bici = this.recuperarBici(evento.getIdBici());
 		bici.setEstado(EstadoBici.NO_DISPONIBLE);
 		this.repositorioBici.save(bici);
-		b
 	}
 
 	@Override
