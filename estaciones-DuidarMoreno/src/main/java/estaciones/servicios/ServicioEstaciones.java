@@ -304,6 +304,17 @@ public class ServicioEstaciones implements IServicioEstaciones, IEventosListener
 		return estaciones;
 	}
 	
+	public Page<Estacion> recuperarEstacionesPaginadoFiltro(String like, 
+			int numPuestos, Pageable pageable) throws DataAccessException{
+		
+		if(numPuestos > 0) {
+			return repositorioEstacion.findByNombreAndNumPuestos(like, numPuestos, pageable);
+		}
+		
+		return repositorioEstacion.findByNombreLike(like, pageable);
+	}
+	
+	
 	// ¿a lo mejor crear un metodo para usuarios normales y otro para gestores?
 	public List<Bici> getBicisFromEstacion(String id_estacion) throws DataAccessException, EntidadNoEncontrada{
 		

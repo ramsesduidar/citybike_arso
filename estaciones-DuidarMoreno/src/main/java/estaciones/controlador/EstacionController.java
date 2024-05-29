@@ -54,14 +54,26 @@ public class EstacionController {
     @Operation(
     		summary ="Obtener todas las Estaciones",
     		description ="Operacion para obtener todas las Estaciones (Solo para el rol Usuario)")
-    public PagedModel<EntityModel<EstacionDTO>> getAllEstaciones(@RequestParam int page,
-    										  @RequestParam int size) throws DataAccessException{
+    public PagedModel<EntityModel<EstacionDTO>> getAllEstaciones(
+    										  @RequestParam int page,
+    										  @RequestParam int size,
+    										  @RequestParam(required = false) String nombre,
+    										  @RequestParam(required = false) Integer numPuestos) throws DataAccessException{
         
     	Pageable paginacion =
     			PageRequest.of(page, size, Sort.by("nombre").ascending());
     	
-    	Page<EstacionDTO> estaciones = servicio.recuperarTodasEstacionesPaginado(paginacion)
-        		.map( e -> new EstacionDTO(e));
+    	Page<EstacionDTO> estaciones;
+    	
+    	if(nombre == null && numPuestos == null) {
+    		estaciones = servicio.recuperarTodasEstacionesPaginado(paginacion)
+            		.map( e -> new EstacionDTO(e));
+    	}
+    	else {
+    		if (numPuestos == null) numPuestos = -1;
+    		estaciones = servicio.recuperarEstacionesPaginadoFiltro(nombre, numPuestos, paginacion)
+    				.map( e -> new EstacionDTO(e));
+    	}
     	
     	//return  this.pagedRA_Estacion.toModel(estaciones);
     	

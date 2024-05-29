@@ -50,6 +50,8 @@ public interface IServicioEstaciones {
 	
 	Page<Estacion> recuperarTodasEstacionesPaginado(Pageable pageable) throws DataAccessException;
 	
+	Page<Estacion> recuperarEstacionesPaginadoFiltro(String like, int numPuestos, Pageable pageable) throws DataAccessException;
+	
 	Page<Bici> getBicisFromEstacionPaginado(String id_estacion, Pageable pageable) throws DataAccessException, EntidadNoEncontrada;
 
 	Page<Bici> getBicisDisponiblesFromEstacionPaginado(String id_estacion, Pageable paginacion) throws DataAccessException, EntidadNoEncontrada;
